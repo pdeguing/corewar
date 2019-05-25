@@ -9,4 +9,13 @@
 #include "libft.h"
 #include <stdlib.h>
 
-typedef char*	t_error;
+typedef char*			t_error;
+
+struct				s_champ
+{
+	char			*name;
+	char			*comment;
+	char			*content;
+};
+
+typedef struct s_champ		t_champ;

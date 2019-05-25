@@ -24,12 +24,13 @@ t_error		verifyExtension(char *name)
 	return NULL;
 }
 
-t_error		parser(char *name)
+/*
+** Parse the file into a t_champ struct, do various verification of input
+** and returns err in case of error.
+*/
+t_error		parser(t_champ *champ, char *name)
 {
 	int	fd;
-	char	*champName;
-	char	*champComment;
-	char	*champContent;
 
 	err = verifyExtension(name)
 	if (err)
@@ -41,17 +42,17 @@ t_error		parser(char *name)
 	{
 		return strerror(errno);
 	}
-	err = getName(&champName, fd);
+	err = getName(&champ->name, fd);
 	if (err)
 	{
 		return err;
 	}
-	err = getComment(&champComment, fd);
+	err = getComment(&champ->comment, fd);
 	if (err)
 	{
 		return err;
 	}
-	err = getContent(&champContent, fd);
+	err = getContent(&champ->content, fd);
 	if (err)
 	{
 		return err;
@@ -59,11 +60,35 @@ t_error		parser(char *name)
 	return NULL;
 }
 
+/*
+** Transform the t_champ struct into a meaningful list of instruction, verify
+** that instructions are valid and returns err if they are not.
+*/
+t_error		lexer(t_champ *champ)
+{
+	(void)champ;
+	return NULL;
+}
+
+void		initChamp(t_champ *champ)
+{
+	champ->name = NULL;
+	champ->comment = NULL;
+	champ->content = NULL;
+}
+
 t_error		assembler(char *name)
 {
 	t_error	err;
+	t_champ	champ;
 
-	err = parser(name);
+	initChamp(&champ);
+	err = parser(&champ, name);
+	if (err)
+	{
+		return err;
+	}
+	err = lexer(champ);
 	if (err)
 	{
 		return err;
