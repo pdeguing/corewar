@@ -15,7 +15,7 @@ t_error		verifyExtension(char *name)
 	len = strlen(name);
 	if (len <= 3)
 	{
-		return strdup("incorrect file extension");
+		return strdup("file name too short");
 	}
 	if (name[len - 1] != 's' || name[len - 2] != '.')
 	{
