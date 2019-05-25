@@ -25,7 +25,7 @@ t_error		verifyExtension(char *name)
 }
 
 /*
-** Parse the file into a t_champ struct, do various verification of input
+** Parses the file into a t_champ struct, does various verifications of input
 ** and returns err in case of error.
 */
 t_error		parser(t_champ *champ, char *name)
@@ -61,7 +61,7 @@ t_error		parser(t_champ *champ, char *name)
 }
 
 /*
-** Transform the t_champ struct into a meaningful list of instruction, verify
+** Transforms the t_champ struct into a list of instructions, verifies
 ** that instructions are valid and returns err if they are not.
 */
 t_error		lexer(t_champ *champ)
