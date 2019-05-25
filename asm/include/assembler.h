@@ -6,8 +6,13 @@
  * Last Modified By  : pdeguing <pdeguing@student.42.us.org>
  */
 
-#include "libft.h"
-#include <stdlib.h>
+#ifndef ASSEMBLER_H
+# define ASSEMBLER_H
+
+# include "../../libft/includes/libft.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
 
 typedef char*			t_error;
 
@@ -19,3 +24,5 @@ struct				s_champ
 };
 
 typedef struct s_champ		t_champ;
+
+#endif
