@@ -6,12 +6,12 @@
 #    By: anjansse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/28 21:57:22 by anjansse          #+#    #+#              #
-#    Updated: 2019/05/24 23:49:48 by anjansse         ###   ########.fr        #
+#    Updated: 2019/05/25 13:17:33 by anjansse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= 	asm
-GENERAL		=  /
+GENERAL		=  main.c assembler.c op.c
 SRCS		=	$(addprefix src/, $(GENERAL))
 
 INCLUDES	=	-I include/
