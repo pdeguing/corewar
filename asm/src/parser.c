@@ -56,11 +56,12 @@ t_error		fillChamp(t_champ *champ, int fd)
 ** Parses the file into a t_champ struct, does various verifications of input
 ** and returns err in case of error.
 */
-t_error		parser(t_champ *champ, char *filename)
+t_error			parser(t_champ *champ, char *filename)
 {
-	int	fd;
+	int			fd;
+	t_error		err;
 
-	err = verifyFilename(filename)
+	err = verifyFilename(filename);
 	if (err)
 	{
 		return err;	

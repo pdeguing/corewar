@@ -6,7 +6,7 @@
  * Last Modified By  : pdeguing <pdeguing@student.42.us.org>
  */
 
-#include <assembler.h>
+#include "assembler.h"
 
 /*
 ** Sets all members of t_champ struct to NULL.
@@ -33,7 +33,7 @@ t_error		assembler(char *filename)
 	{
 		return err;
 	}
-	err = lexer(champ);
+	err = lexer(&champ);
 	if (err)
 	{
 		return err;

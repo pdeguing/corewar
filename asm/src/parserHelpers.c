@@ -17,6 +17,7 @@ t_error		getName(char **dst, int fd)
 
 	(void)dst;
 	(void)fd;
+	return (NULL);
 }
 
 /*
@@ -28,6 +29,7 @@ t_error		getComment(char **dst, int fd)
 
 	(void)dst;
 	(void)fd;
+	return (NULL);
 }
 
 /*
@@ -40,4 +42,5 @@ t_error		getContent(char **dst, int fd)
 
 	(void)dst;
 	(void)fd;
+	return (NULL);
 }
