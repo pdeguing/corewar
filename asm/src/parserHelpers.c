@@ -14,10 +14,15 @@
 t_error		getName(char **dst, int fd)
 {
 	t_error		err;
+	char		*line;
+	char		*name;
 
-	(void)dst;
-	(void)fd;
-	return (NULL);
+	get_next_line(fd, &line);
+	if (!(name = ft_strsplit(line, ' ')[1]) || name[0] != '"')
+		return (err = "\x1b[91mName not valid.");
+	name = ft_strsub(name, 1, ft_strlen(name) - 2);
+	*dst = name;
+	return NULL;
 }
 
 /*
@@ -26,9 +31,14 @@ t_error		getName(char **dst, int fd)
 t_error		getComment(char **dst, int fd)
 {
 	t_error		err;
+	char		*line;
+	char		*comment;
 
-	(void)dst;
-	(void)fd;
+	get_next_line(fd, &line);
+	if (!(comment = ft_strsplit(line, ' ')[1]) || comment[0] != '"')
+		return (err = "\x1b[91mComment not valid.");
+	comment = ft_strsub(comment, 1, ft_strlen(comment) - 2);
+	*dst = comment;
 	return (NULL);
 }
 
@@ -39,8 +49,12 @@ t_error		getComment(char **dst, int fd)
 t_error		getContent(char **dst, int fd)
 {
 	t_error		err;
+	char		*content;
+	char		*tmp;
 
-	(void)dst;
-	(void)fd;
+	content = "";
+	while (get_next_line(fd, &tmp) > 0)
+		content = ft_strjoin(ft_strjoin(content, tmp), "\n");
+	*dst = content;
 	return (NULL);
 }
