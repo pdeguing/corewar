@@ -6,11 +6,11 @@
 #    By: anjansse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/28 21:57:22 by anjansse          #+#    #+#              #
-#    Updated: 2019/05/24 14:50:41 by anjansse         ###   ########.fr        #
+#    Updated: 2019/05/24 23:49:48 by anjansse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= 	Corewar
+NAME		= 	asm
 GENERAL		=  /
 SRCS		=	$(addprefix src/, $(GENERAL))
 
@@ -50,7 +50,7 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 	@rm -rf $(LLIB)
-	@echo "\t\n\x1b[96mCorewar \x1b[91mlibrary has been cleaned!\x1b[0m\n"
+	@echo "\t\n\x1b[96mASM \x1b[91mlibrary has been cleaned!\x1b[0m\n"
 
 totfclean: fclean
 	@make -C libft/ fclean
