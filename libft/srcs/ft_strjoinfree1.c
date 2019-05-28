@@ -6,13 +6,13 @@
 /*   By: anjansse <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 20:02:38 by anjansse          #+#    #+#             */
-/*   Updated: 2019/03/15 13:39:07 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/05/25 14:58:08 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strjoinfree(char *s1, char *s2)
+char		*ft_strjoinfree1(char *s1, char *s2)
 {
 	char	*s3;
 

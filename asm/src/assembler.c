@@ -30,13 +30,9 @@ t_error		assembler(char *filename)
 	initChamp(&champ);
 	err = parser(&champ, filename);
 	if (err)
-	{
 		return err;
-	}
 	err = lexer(&champ);
 	if (err)
-	{
 		return err;
-	}
 	return NULL;
 }
