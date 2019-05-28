@@ -14,6 +14,10 @@
 */
 t_error		lexer(t_champ *champ)
 {
-	(void)champ;
+	if (champ == NULL)
+		printf("NULL\n");
+	printf("name = %s\n", champ->name);
+	printf("comment = %s\n", champ->comment);
+	printf("content = %s\n", champ->content);
 	return NULL;
 }

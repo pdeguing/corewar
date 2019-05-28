@@ -18,7 +18,7 @@ INCLUDES	=	-I include/
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -fsanitize=undefined -g
+CFLAGS		=	-Wall -Wextra -Werror
 
 LLIB		=	libft.a
 
@@ -34,7 +34,7 @@ $(NAME):
 	@echo ""
 	@echo -n 'Compiling Program...'
 	@cp ../libft/libft.a .
-	@$(CC) $(CFLAG) $(SRCS) $(INCLUDES) $(LLIB) -o $(NAME) -fsanitize=address -fsanitize=undefined -g
+	@$(CC) $(CFLAG) $(SRCS) $(INCLUDES) $(LLIB) -o $(NAME)
 	@echo "\t\x1b[92m✓✓\x1b[0m\n"
 
 totall: lib all
