@@ -6,12 +6,12 @@
 #    By: anjansse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/28 21:57:22 by anjansse          #+#    #+#              #
-#    Updated: 2019/05/25 13:45:14 by anjansse         ###   ########.fr        #
+#    Updated: 2019/05/28 14:26:02 by anjansse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= 	asm
-GENERAL		=  main.c assembler.c parser.c parserHelpers.c lexer.c
+GENERAL		=  main.c assembler.c parser.c parserHelpers.c lexer.c op.c
 SRCS		=	$(addprefix src/, $(GENERAL))
 
 INCLUDES	=	-I include/
