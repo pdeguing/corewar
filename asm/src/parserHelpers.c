@@ -37,11 +37,11 @@ t_error		getComment(char **dst, int fd)
 	get_next_line(fd, &line);
 	while (*line && *line != '"')
 		line++;
-	/*
-	if (!(comment = ft_strsplit(line, ' ')[1]) || comment[0] != '"')
+	if (*line)
+		line++;
+	if (line[ft_strlen(line) - 1] != '"')
 		return (err = "\x1b[91mComment not valid.");
-		*/
-	comment = ft_strsub(line, 1, ft_strlen(line) - 2);
+	comment = ft_strsub(line, 0, ft_strlen(line) - 1);
 	*dst = comment;
 	return (NULL);
 }
@@ -59,7 +59,6 @@ t_error		getContent(char **dst, int fd)
 	content = ft_strdup("");
 	while (get_next_line(fd, &tmp) > 0)
 		content = ft_strjoin(ft_strjoin(content, tmp), "\n");
-	ft_putstr(content);
 	*dst = content;
 	return (NULL);
 }
