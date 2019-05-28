@@ -85,10 +85,10 @@ typedef struct		header_s
 typedef struct		s_op
 {
 	char		*name;
-	int		something;
-	int		*args;
+	int		n_param;
+	int		*param;
 	int		opcode;
-	int		idontknow;
+	int		n_cycle;
 	char		*description;
 	int		what;
 	int		thefuck;
