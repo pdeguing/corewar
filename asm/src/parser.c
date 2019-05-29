@@ -15,14 +15,14 @@ t_error		verifyFilename(char *filename)
 {
 	int	len;
 
-	len = strlen(filename);
+	len = ft_strlen(filename);
 	if (len <= 3)
 	{
-		return strdup("file name too short");
+		return ft_strdup("file name too short");
 	}
 	if (filename[len - 1] != 's' || filename[len - 2] != '.')
 	{
-		return strdup("incorrect file extension");
+		return ft_strdup("incorrect file extension");
 	}
 	return NULL;
 }
