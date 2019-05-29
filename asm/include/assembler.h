@@ -6,7 +6,7 @@
  * Last Modified By  : pdeguing <pdeguing@student.42.us.org>
  */
 
-#ifndef ASSEMBLER_H
+#ifndef	 ASSEMBLER_H
 # define ASSEMBLER_H
 
 # include "../../libft/includes/libft.h"
@@ -16,6 +16,9 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
+
+# define RED	"\x1b[91m"
+# define RESET	"\x1b[0m"
 
 typedef char*			t_error;
 
