@@ -26,12 +26,16 @@ t_error		assembler(char *filename)
 {
 	t_error	err;
 	t_champ	champ;
+	t_instruction	*instructions;
 
 	initChamp(&champ);
 	err = parser(&champ, filename);
 	if (err)
 		return err;
-	err = lexer(&champ);
+	err = lexer(&instructions, &champ);
+	if (err)
+		return err;
+	err = write_file(&champ, &instructions);
 	if (err)
 		return err;
 	return NULL;
