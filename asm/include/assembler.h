@@ -40,25 +40,25 @@ typedef struct			s_champ
 */
 typedef struct			s_argument
 {
-	char		*label;
+	char			*label;
 	int			type;
 	int			compiled_size;
 	int			value;
 
-}						t_argument;
+}				t_argument;
 
 typedef struct			s_instruction
 {
-	int				opcode;
+	int			opcode;
 	uint32_t		encoding_byte;
 	char			*args[3];
-}						t_instruction;
+}				t_instruction;
 
 typedef struct			s_label
 {
 	char			*name;
 	uint32_t		offset;
-}						t_label;
+}				t_label;
 
 t_error		assembler(char *filename);
 void		initChamp(t_champ *champ);
