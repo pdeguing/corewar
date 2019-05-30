@@ -38,34 +38,31 @@ typedef struct			s_champ
 **						direct with thefuck == 0);
 **	-> value = compiled value;
 */
-typedef struct			s_arg
+typedef struct			s_argument
 {
-	char			*label;
-
+	char		*label;
 	int			type;
 	int			compiled_size;
-
 	int			value;
 
-}				t_arg;
+}						t_argument;
 
 typedef struct			s_instruction
 {
-	int			opcode;
+	int				opcode;
 	uint32_t		encoding_byte;
-
 	char			*args[3];
-}				t_instruction;
+}						t_instruction;
 
 typedef struct			s_label
 {
 	char			*name;
 	uint32_t		offset;
-}				t_label;
+}						t_label;
 
 t_error		assembler(char *filename);
 void		initChamp(t_champ *champ);
-t_error		lexer(t_champ *champ);
+t_error		lexer(t_instruction **instructions, t_champ *champ);
 t_error		verifyFilename(char *filename);
 t_error		fillChamp(t_champ *champ, int fd);
 t_error		parser(t_champ *champ, char *filename);

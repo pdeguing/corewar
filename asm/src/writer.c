@@ -1,3 +1,5 @@
+#include <assembler.h>
+
 /*
 ** Prints t_header to .cor file.
 */

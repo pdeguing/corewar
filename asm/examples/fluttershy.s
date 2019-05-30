@@ -32,6 +32,7 @@ ardefinit:
 	ld		%150994953, r4
 	ld		%-186, r5
 
+ardefinit:
 ardefwrite:
 ardefl1:
 	live	%295423
@@ -47,7 +48,10 @@ ardefloop:
 	ld		%0, r16
 	zjmp	%:ardefwrite
 
+ardefinit:
 
+ardefinit:
+ardefinit:
 coregeni:
 	st		r1, 6
 
@@ -80,6 +84,8 @@ corelive:
 	live	%985341
 	live	%985341
 	zjmp	%:corelive
+
+	live	%985341
 
 avdefgeni:
 	st 		r1, 6
