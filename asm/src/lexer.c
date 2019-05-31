@@ -23,7 +23,7 @@ static void	replace(char *str, char a, char b)
 
 /*
 ** Gets label from str by taking what comes before LABEL_CHAR. Verifies that
-** label if properly formatted.
+** label if properly formatted with LABEL_CHARS.
 */
 t_error		get_label(t_label **new_label, char *str)
 {
@@ -36,7 +36,7 @@ t_error		get_label(t_label **new_label, char *str)
 }
 
 /*
-** Gets the instruction if it exists from the split elements of the line.
+** Gets the instruction, if it exists, from the split elements of the line.
 */
 t_error		get_instruction(t_instruction **new_instruction, char **elem)
 {
@@ -83,6 +83,17 @@ t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
 }
 
 /*
+** Feeds the label references in instructions' arguments with the according
+** label offset. Return an error if the label does not exist.
+*/
+t_err		feed_references(t_darray *instructions, t_darray labels)
+{
+	(void)instructions;
+	(void)labels;
+	return NULL;
+}
+
+/*
 ** Transforms the t_champ struct into a list of instructions, verifies
 ** that instructions are valid and returns err if they are not.
 */
@@ -91,6 +102,7 @@ t_error		lexer(t_darray *instructions, t_champ *champ)
 	char		**lines;
 	int		i;
 	t_darray	labels;
+	t_error		err;
 
 	lines = ft_strsplit(champ->content);
 	if (!lines)
@@ -102,6 +114,11 @@ t_error		lexer(t_darray *instructions, t_champ *champ)
 		i++;
 
 	}
+	err = feed_references(instructions, labels);
+	if (err)
+		return err;
+	// free(labels);
+	return NULL;
 	// split champ->content into array of lines
 	// for each line, split by space:
 	//
