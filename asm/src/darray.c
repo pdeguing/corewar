@@ -1,13 +1,22 @@
 #include <darray.h>
 
-t_darray	append(t_darray *array, void *item)
+t_darray	*darray_append(t_darray *arr, void *item)
 {
-	if (array->elem >= array->size)
+	if (arr->size >= arr->capacity)
 	{
-		array = realloc(array, array->size + 100);
-		array->size += 100;
+		arr = realloc(arr, arr->capacity + 100);
+		arr->capacity += 100;
 	}
-	array->array[array->elem] = item;
-	array->elem++;
-	return array;
+	arr->content[arr->size] = item;
+	arr->size++;
+	return arr;
+}
+
+void		darray_init(t_darray *arr)
+{
+	if (!arr)
+		return ;
+	arr->content = NULL;
+	arr->size = 0;
+	arr->capacity = 0;
 }

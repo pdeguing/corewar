@@ -22,15 +22,15 @@ static void	replace(char *str, char a, char b)
 }
 
 /*
-** Gets label from str by taking what comes before LABEL_CHAR. Verifies that
-** label if properly formatted with LABEL_CHARS. Allocate label struct, fill
-** it with name and offset and assign it to new_label. We get the offset by
-** looking at size of instructions array.
+** Gets label from first item of elem by taking what comes before LABEL_CHAR.
+** Verifies that label if properly formatted with LABEL_CHARS.
+** Allocate label struct, fill it with name and offset and assign it
+** to new_label. We get the offset by looking at size of instructions array.
 */
-t_error		get_label(t_label **new_label, char *str, t_darray *instructions)
+t_error		get_label(t_label **new_label, char **elem, t_darray *instructions)
 {
 	(void)new_label;
-	(void)str;
+	(void)elem;
 	(void)instructions;
 	return NULL;
 }
@@ -119,13 +119,13 @@ t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
 	if (err)
 		return err;
 	if (new_label)
-		append(labels, new_label);
+		darray_append(labels, new_label);
 
 	err = get_instruction(&new_instruction, elem);
 	if (err)
 		return err;
 	if (new_instruction)
-		append(instructions, new_instruction);
+		darray_append(instructions, new_instruction);
 
 	return NULL;
 }
@@ -134,7 +134,7 @@ t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
 ** Feeds the label references in instructions' arguments with the according
 ** label offset. Return an error if the label does not exist.
 */
-t_err		feed_references(t_darray *instructions, t_darray labels)
+t_error		feed_references(t_darray *instructions, t_darray labels)
 {
 	(void)instructions;
 	(void)labels;
@@ -152,13 +152,14 @@ t_error		lexer(t_darray *instructions, t_champ *champ)
 	t_darray	labels;
 	t_error		err;
 
-	lines = ft_strsplit(champ->content);
+	darray_init(&labels);
+	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
 		return ft_strdup("Could not split into array of lines");
 	i = 0;
 	while (lines[i])
 	{
-		parse_line(instructions, labels, lines[i]);
+		parse_line(instructions, &labels, lines[i]);
 		i++;
 
 	}

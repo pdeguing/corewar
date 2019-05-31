@@ -23,6 +23,7 @@
 
 # define WHITE_SPACE		32
 # define TAB			9
+# define NEWLINE		10
 
 typedef char*			t_error;
 

@@ -1,6 +1,8 @@
 #ifndef DARRAY_H
 # define DARRAY_H
 
+#include <stdlib.h>
+
 typedef struct			s_darray
 {
 	void			*content;
@@ -8,7 +10,8 @@ typedef struct			s_darray
 	size_t			capacity;
 }				t_darray;
 
-t_darray	append(t_darray *arr, void *item);
+t_darray	darray_append(t_darray *arr, void *item);
+void		darray_init(t_darray *arr);
 
 
 #endif
