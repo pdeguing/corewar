@@ -60,13 +60,22 @@ typedef struct			s_label
 	uint32_t		offset;
 }				t_label;
 
+typedef struct			s_darray
+{
+	void				*array;
+	size_t				elem;
+	size_t				size;
+}						t_darray;
+
+t_darray	append(t_darray *arr, void *item);
+
 t_error		assembler(char *filename);
 void		initChamp(t_champ *champ);
-t_error		lexer(t_instruction **instructions, t_champ *champ);
+t_error		lexer(t_label **label, t_instruction **instructions, t_champ *champ);
 t_error		verifyFilename(char *filename);
 t_error		fillChamp(t_champ *champ, int fd);
 t_error		parser(t_champ *champ, char *filename);
-t_error		write_file(t_champ *champ, t_instruction *instructions);
+t_error		write_file(t_champ *champ, t_instruction **instructions);
 t_error		getName(char **dst, int fd);
 t_error		getComment(char **dst, int fd);
 t_error		getContent(char **dst, int fd);
