@@ -23,29 +23,77 @@ static void	replace(char *str, char a, char b)
 
 /*
 ** Gets label from str by taking what comes before LABEL_CHAR. Verifies that
-** label if properly formatted with LABEL_CHARS.
+** label if properly formatted with LABEL_CHARS. Allocate label struct, fill
+** it with name and offset and assign it to new_label. We get the offset by
+** looking at size of instructions array.
 */
-t_error		get_label(t_label **new_label, char *str)
+t_error		get_label(t_label **new_label, char *str, t_darray *instructions)
 {
-	if (ft_strchr(elem[0], LABEL_CHAR)) 
-	{
-		if (err)
-			return err;
-		// op = sub what is after :
-	}
+	(void)new_label;
+	(void)str;
+	(void)instructions;
+	return NULL;
+}
+
+/*
+** Gets the opcode from elem by looking at first elem, to check if op string is
+** contained after LABEL_CHAR, if not, then by looking at second elem.
+** Once we have op string, we check op array to see if the string is
+** valid and to get the corresponding opcode and assign to dst.
+*/
+t_error		get_opcode(t_instruction *instruction, char **elem)
+{
+	(void)instruction;
+	(void)elem;
+	return NULL;
+}
+
+/*
+** Gets the arguments of the instruction. First checks how many arguments are
+** expected for this opcode, then tries to extract them from elem and verifies
+** the formating. For each argument, we need to create a corresponding
+** t_argument struct, and feed the label reference if appropriate, the type, the
+** compiled size by looking at 'thefuck' in t_op struct and assigning its value
+** in case it is not a reference.
+*/
+t_error		get_args(t_instruction *instruction, char **elem)
+{
+	(void)instruction;
+	(void)elem;
+	return NULL;
+}
+
+/*
+** Sets the encoding byte of instruction by looking if this op has one and then
+** checking the type of the arguments.
+*/
+void		set_encoding_byte(t_instruction *instruction)
+{
+	(void)instruction;
 }
 
 /*
 ** Gets the instruction, if it exists, from the split elements of the line.
+** First allocates new instruction struct, then feed it field by field.
 */
-t_error		get_instruction(t_instruction **new_instruction, char **elem)
+t_error		get_instruction(t_instruction **dst, char **elem)
 {
+	t_instruction	*new;
 	t_error		err;
 
-	err = get_opcode(&current->opcode, elem);
+	// if len(elem) is <= 1 or elem[1] is a comment, set dst = NULL;
+	new = malloc(sizeof(t_instruction));
+	if (!new)
+		return ft_strdup("could not allocate memory");
+	*dst = new;
+	err = get_opcode(new, elem);
 	if (err)
 		return err;
-	// if op is NULL get op, else we got it before
+	err = get_args(new, elem);
+	if (err)
+		return err;
+	set_encoding_byte(new);
+	return NULL;
 }
 
 /*
@@ -67,7 +115,7 @@ t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
 	if (!elem)
 		return ft_strdup("could not split the line");
 
-	err = get_label(&new_label, elem);
+	err = get_label(&new_label, elem, instructions);
 	if (err)
 		return err;
 	if (new_label)
@@ -117,7 +165,7 @@ t_error		lexer(t_darray *instructions, t_champ *champ)
 	err = feed_references(instructions, labels);
 	if (err)
 		return err;
-	// free(labels);
+	// free(labels); we don't need the label array anymore once we have instructions
 	return NULL;
 	// split champ->content into array of lines
 	// for each line, split by space:
