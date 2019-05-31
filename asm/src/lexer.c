@@ -8,6 +8,8 @@
 
 #include <assembler.h>
 
+size_t		g_offset = 0;
+
 /*
 ** Replaces in str every occurence of a by b.
 */
@@ -25,13 +27,13 @@ static void	replace(char *str, char a, char b)
 ** Gets label from first item of elem by taking what comes before LABEL_CHAR.
 ** Verifies that label if properly formatted with LABEL_CHARS.
 ** Allocate label struct, fill it with name and offset and assign it
-** to new_label. We get the offset by looking at size of instructions array.
+** to new_label. We get the offset by looking at global.
 */
-t_error		get_label(t_label **new_label, char **elem, t_darray *instructions)
+t_error		get_label(t_label **new_label, char **elem)
 {
 	(void)new_label;
 	(void)elem;
-	(void)instructions;
+	(void)g_offset;
 	return NULL;
 }
 
@@ -73,6 +75,16 @@ void		set_encoding_byte(t_instruction *instruction)
 }
 
 /*
+** Updates current offset (number of bytes of instructions already parsed) by 
+** incrementing with the byte size of instruction. The byte size of instruction
+** is: opcode + encoding + sum(arguments size).
+*/
+void		update_offset(t_instruction *instruction)
+{
+	(void)instruction;
+}
+
+/*
 ** Gets the instruction, if it exists, from the split elements of the line.
 ** First allocates new instruction struct, then feed it field by field.
 */
@@ -93,13 +105,14 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	if (err)
 		return err;
 	set_encoding_byte(new);
+	update_offset(new);
 	return NULL;
 }
 
 /*
  ** Parses a line into an instruction and possibly a label.
  */
-t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
+t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 {
 	char		**elem;
 	t_label		*new_label;
@@ -115,17 +128,17 @@ t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
 	if (!elem)
 		return ft_strdup("could not split the line");
 
-	err = get_label(&new_label, elem, instructions);
+	err = get_label(&new_label, elem);
 	if (err)
 		return err;
 	if (new_label)
-		darray_append(labels, new_label);
+		VECTOR_ADD(labels, new_label);
 
 	err = get_instruction(&new_instruction, elem);
 	if (err)
 		return err;
 	if (new_instruction)
-		darray_append(instructions, new_instruction);
+		VECTOR_ADD(instructions, new_instruction);
 
 	return NULL;
 }
@@ -134,7 +147,7 @@ t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
 ** Feeds the label references in instructions' arguments with the according
 ** label offset. Return an error if the label does not exist.
 */
-t_error		feed_references(t_darray *instructions, t_darray labels)
+t_error		feed_references(t_vector *instructions, t_vector *labels)
 {
 	(void)instructions;
 	(void)labels;
@@ -145,14 +158,14 @@ t_error		feed_references(t_darray *instructions, t_darray labels)
 ** Transforms the t_champ struct into a list of instructions, verifies
 ** that instructions are valid and returns err if they are not.
 */
-t_error		lexer(t_darray *instructions, t_champ *champ)
+t_error		lexer(t_vector *instructions, t_champ *champ)
 {
 	char		**lines;
 	int		i;
-	t_darray	labels;
+	t_vector	labels;
 	t_error		err;
 
-	darray_init(&labels);
+	VECTOR_INIT(&labels);
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
 		return ft_strdup("Could not split into array of lines");
@@ -163,7 +176,7 @@ t_error		lexer(t_darray *instructions, t_champ *champ)
 		i++;
 
 	}
-	err = feed_references(instructions, labels);
+	err = feed_references(instructions, &labels);
 	if (err)
 		return err;
 	// free(labels); we don't need the label array anymore once we have instructions

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME		= asm
-GENERAL		= main.c assembler.c parser.c parserHelpers.c lexer.c op.c writer.c
+GENERAL		= main.c assembler.c parser.c parserHelpers.c lexer.c op.c writer.c vector.c
 SRCS		= $(addprefix src/, $(GENERAL))
 
 INCLUDES	= -I include/

@@ -24,9 +24,9 @@ void		initChamp(t_champ *champ)
 */
 t_error		assembler(char *filename)
 {
-	t_error	err;
-	t_champ	champ;
-	t_darray	instructions;
+	t_error		err;
+	t_champ		champ;
+	t_vector	instructions;
 
 	initChamp(&champ);
 	err = parser(&champ, filename);

@@ -67,11 +67,11 @@ typedef struct			s_label
 
 t_error		assembler(char *filename);
 void		initChamp(t_champ *champ);
-t_error		lexer(t_darray *instructions, t_champ *champ);
+t_error		lexer(t_vector *instructions, t_champ *champ);
 t_error		verifyFilename(char *filename);
 t_error		fillChamp(t_champ *champ, int fd);
 t_error		parser(t_champ *champ, char *filename);
-t_error		write_file(t_champ *champ, t_darray *instructions);
+t_error		write_file(t_champ *champ, t_vector *instructions);
 t_error		getName(char **dst, int fd);
 t_error		getComment(char **dst, int fd);
 t_error		getContent(char **dst, int fd);
