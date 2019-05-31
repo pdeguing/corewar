@@ -10,17 +10,17 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= 	asm
-GENERAL		=  main.c assembler.c parser.c parserHelpers.c lexer.c op.c
-SRCS		=	$(addprefix src/, $(GENERAL))
+NAME		= asm
+GENERAL		= main.c assembler.c parser.c parserHelpers.c lexer.c op.c writer.c
+SRCS		= $(addprefix src/, $(GENERAL))
 
-INCLUDES	=	-I include/
+INCLUDES	= -I include/
 
-CC			=	gcc
+CC		= gcc
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror
 
-LLIB		=	libft.a
+LLIB		= libft.a
 
 lib:
 	@echo -n 'Compiling libft...'

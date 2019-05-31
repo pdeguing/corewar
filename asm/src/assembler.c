@@ -26,13 +26,14 @@ t_error		assembler(char *filename)
 {
 	t_error	err;
 	t_champ	champ;
-	t_instruction	*instructions;
+	t_darray	labels;
+	t_darray	instructions;
 
 	initChamp(&champ);
 	err = parser(&champ, filename);
 	if (err)
 		return err;
-	err = lexer(&instructions, &champ);
+	err = lexer(&labels, &instructions, &champ);
 	if (err)
 		return err;
 	err = write_file(&champ, &instructions);

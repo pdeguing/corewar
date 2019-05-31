@@ -8,61 +8,77 @@
 
 #include <assembler.h>
 
-static int				is_in(char *str, t_label **label, t_info *info)
+/*
+** Replaces in str every occurence of a by b.
+*/
+static void	replace(char *str, char a, char b)
 {
-	int		i;
-
-	i = -1;
-	while (++i < info->index)
+	while (*str)
 	{
-		//ft_printf("str is %s\tlabel is %s\n", str, label[info->index]->name);
-		if (label[i] && ft_strequ(label[i]->name, str))
-			return (1);
+		if (*str == a)
+			*str = b;
+		str++;
 	}
-	return (0);
 }
 
 /*
-** Retrieves the label's name and it's offset position and check that it
-** doesn't already exists.
+** Gets label from str by taking what comes before LABEL_CHAR. Verifies that
+** label if properly formatted.
 */
-
-static t_error			get_label(t_info *info, t_label **label, char *line)
+t_error		get_label(t_label **new_label, char *str)
 {
-	int		max;
-	char	*tmp;
-
-	(void)label;
-	max = 0;
-	while (line[max] && line[max] != ' ' && line[max] != '\t')
-		max++;
-	tmp = ft_strsub(line, 0, max);
-	if (tmp[max - 1] != ':')
-		return ft_strdup(RED"Label not well formated"RESET);
-	if (!is_in(tmp, label, info))
+	if (ft_strchr(elem[0], LABEL_CHAR)) 
 	{
-		append(t_darray, t_label)
-		ft_printf("index is %d\n", info->index);
-		label[info->index]->name = ft_strdup(tmp);
-		ft_putstr(label[info->index]->name);
-		ft_putchar('\n');
-		info->index++;
+		if (err)
+			return err;
+		// op = sub what is after :
 	}
-	return NULL;
 }
 
 /*
-** Retrieves all the informations on that line (label, instructions).
+** Gets the instruction if it exists from the split elements of the line.
 */
-
-static t_error			get_info(t_info *info, char *line, t_label **label, \
-		t_instruction **inst)
+t_error		get_instruction(t_instruction **new_instruction, char **elem)
 {
-	int		i;
+	t_error		err;
 
-	i = 0;
-	if (line[i] != ' ' && line[i] != '\t')
-		get_label(info, label, line);
+	err = get_opcode(&current->opcode, elem);
+	if (err)
+		return err;
+	// if op is NULL get op, else we got it before
+}
+
+/*
+ ** Parses a line into an instruction and possibly a label.
+ */
+t_error		parse_line(t_darray *instructions, t_darray *labels, char *line)
+{
+	char		**elem;
+	t_label		*new_label;
+	t_instruction	*new_instruction;
+	t_error		err;
+
+	new_label = NULL;
+	new_instruction = NULL;
+
+	replace(line, TAB, WHITE_SPACE);
+	replace(line, WHITE_SPACE, SEPARATOR_CHAR);
+	elem = ft_strsplit(line, SEPARATOR_CHAR);
+	if (!elem)
+		return ft_strdup("could not split the line");
+
+	err = get_label(&new_label, elem);
+	if (err)
+		return err;
+	if (new_label)
+		append(labels, new_label);
+
+	err = get_instruction(&new_instruction, elem);
+	if (err)
+		return err;
+	if (new_instruction)
+		append(instructions, new_instruction);
+
 	return NULL;
 }
 
@@ -70,24 +86,21 @@ static t_error			get_info(t_info *info, char *line, t_label **label, \
 ** Transforms the t_champ struct into a list of instructions, verifies
 ** that instructions are valid and returns err if they are not.
 */
-
-t_error					lexer(t_darray *labels, t_instruction **instructions,\
-		t_champ *champ)
+t_error		lexer(t_darray *instructions, t_champ *champ)
 {
+	char		**lines;
 	int		i;
-	char	**lines;
-	t_info	*info;
+	t_darray	labels;
 
-	i = -1;
-	info = malloc(sizeof(info));
-	info->index = 0;
-	lines = ft_strsplit(champ->content, '\n');
-	while (lines[++i])
+	lines = ft_strsplit(champ->content);
+	if (!lines)
+		return ft_strdup("Could not split into array of lines");
+	i = 0;
+	while (lines[i])
 	{
-		//ft_putstr(lines[i]);
-		//ft_putchar('\n');
-		get_info(info, lines[i], label, instructions);
-			//return ft_strdup(RED"Couldn't get information"RESET);
+		parse_line(instructions, labels, lines[i]);
+		i++;
+
 	}
 	// split champ->content into array of lines
 	// for each line, split by space:

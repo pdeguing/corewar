@@ -29,7 +29,7 @@ static t_error		print_header(t_champ *champ)
 /*
 ** Prints list of instructions to .cor file.
 */
-static t_error		print_instructions(t_instruction *instructions)
+static t_error		print_instructions(t_darray *instructions)
 {
 	(void)instructions;
 	return NULL;
@@ -38,7 +38,7 @@ static t_error		print_instructions(t_instruction *instructions)
 /*
 ** Writes header and compiled instructions to .cor file.
 */
-t_error		write_file(t_champ *champ, t_instruction *instructions)
+t_error		write_file(t_champ *champ, t_darray *instructions)
 {
 	t_error err;
 
