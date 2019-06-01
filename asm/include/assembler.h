@@ -49,7 +49,7 @@ typedef struct			s_argument
 {
 	char			*label;
 	int			type;
-	int			compiled_size;
+	size_t			size;
 	int			value;
 
 }				t_argument;
@@ -60,6 +60,7 @@ typedef struct			s_instruction
 	uint32_t		encoding_byte;
 	int			n_args;
 	t_argument		args[3];
+	size_t			size;
 }				t_instruction;
 
 typedef struct			s_label
@@ -85,7 +86,7 @@ t_error		get_label(t_label **new_label, char **elem);
 
 t_error		get_opcode(t_instruction *instruction, char **elem);
 void		set_encoding_byte(t_instruction *instruction);
-void		update_offset(t_instruction *instruction);
+void		set_size(t_instruction *instruction);
 t_error		get_args(t_instruction *instruction, char **elem);
 t_error		get_instruction(t_instruction **dst, char **elem);
 

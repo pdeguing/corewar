@@ -86,14 +86,26 @@ void		set_encoding_byte(t_instruction *instruction)
 }
 
 /*
-** Updates current offset (number of bytes of instructions already parsed) by 
-** incrementing with the byte size of instruction. The byte size of instruction
+** Calculate byte size of instruction. The byte size of instruction
 ** is: opcode + encoding + sum(arguments size).
 */
-void		update_offset(t_instruction *instruction)
+void		set_size(t_instruction *instruction)
 {
+	int	i;
+
 	printf(RED"update_offset:\n"RESET);
-	(void)instruction;
+	instruction->size = 0;
+	if (!instruction->opcode)
+		return ;
+	instruction->size++; 
+	if (instruction->encoding_byte)
+		instruction->size++;
+	i = 0;
+	while (i < instruction->n_args)
+	{
+		instruction->size += instruction->args[i].size;
+		i++;
+	}
 }
 
 /*
@@ -119,6 +131,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 		return err;
 	set_encoding_byte(new);
 	printf(PURPLE"encoding_byte[%d] = %X\n"RESET, new->opcode, new->encoding_byte);
-	update_offset(new);
+	set_size(new);
+	g_offset += new->size;
 	return NULL;
 }
