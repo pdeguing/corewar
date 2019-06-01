@@ -58,8 +58,8 @@ typedef struct			s_instruction
 {
 	int			opcode;
 	uint32_t		encoding_byte;
-	int			n_arg;
-	char			*args[3];
+	int			n_args;
+	t_argument		args[3];
 }				t_instruction;
 
 typedef struct			s_label

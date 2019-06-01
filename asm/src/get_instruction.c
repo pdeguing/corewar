@@ -58,8 +58,31 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 */
 void		set_encoding_byte(t_instruction *instruction)
 {
+	uint32_t	args[3];
+	int		i;
+
 	printf(RED"set_encoding_byte:\n"RESET);
-	(void)instruction;
+	args[0] = 0;
+	args[1] = 0;
+	args[2] = 0;
+	if (!g_op_tab[instruction->opcode - 1].what)
+		return ;
+	instruction->encoding_byte = 0;
+	i = 0;
+	while (i < instruction->n_args)
+	{
+		if (instruction->args[i].type == T_REG)
+			args[i] = REG_CODE;
+		else if (instruction->args[i].type == T_DIR)
+			args[i] = DIR_CODE;
+		else
+			args[i] = IND_CODE;
+		i++;
+	}
+	//printf("args[0] = %d / args[1] = %d / args[2] = %d\n", args[0], args[1], args[2]);
+	instruction->encoding_byte += args[0] << 6;
+	instruction->encoding_byte += args[1] << 4;
+	instruction->encoding_byte += args[2] << 2;
 }
 
 /*
@@ -95,6 +118,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	if (err)
 		return err;
 	set_encoding_byte(new);
+	printf(PURPLE"encoding_byte[%d] = %X\n"RESET, new->opcode, new->encoding_byte);
 	update_offset(new);
 	return NULL;
 }
