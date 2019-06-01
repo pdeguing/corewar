@@ -23,7 +23,6 @@ typedef struct			s_vector
 
 void				vector_init(t_vector *);
 int				vector_total(t_vector *);
-static void			vector_resize(t_vector *, int);
 void				vector_add(t_vector *, void *);
 void				vector_set(t_vector *, int, void *);
 void				*vector_get(t_vector *, int);
