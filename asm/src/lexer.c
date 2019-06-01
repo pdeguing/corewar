@@ -24,8 +24,8 @@ static void	replace(char *str, char a, char b)
 }
 
 /*
- ** Parses a line into an instruction and possibly a label.
- */
+** Parses a line into an instruction and possibly a label.
+*/
 t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 {
 	char		**elem;
@@ -39,7 +39,7 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	replace(line, TAB, WHITE_SPACE);
 	replace(line, WHITE_SPACE, SEPARATOR_CHAR);
 	elem = ft_strsplit(line, SEPARATOR_CHAR);
-	if (!elem)
+	if (!elem || !elem[0])
 		return ft_strdup("could not split the line");
 	err = get_label(&new_label, elem);
 	if (err)

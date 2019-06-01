@@ -1,6 +1,29 @@
 #include <assembler.h>
 
 /*
+** Parses elem to get the instruction string
+*/
+char		*get_opstr(char **elem)
+{
+	char	*label_char;
+	size_t	len;
+
+	label_char = ft_strchr(elem[0], LABEL_CHAR);
+	if (label_char)
+	{
+		if (*(label_char + 1))
+		{
+			len = ft_strlen(label_char + 1);
+			return ft_strsub(elem[0], label_char + 1 - elem[0], len);
+		}
+		if (!elem[1])
+			return NULL;
+		return elem[1];
+	}
+	return elem[0];
+}
+
+/*
 ** Gets the opcode from elem by looking at first elem, to check if op string is
 ** contained after LABEL_CHAR, if not, then by looking at second elem.
 ** Once we have op string, we check op array to see if the string is
@@ -8,7 +31,16 @@
 */
 t_error		get_opcode(t_instruction *instruction, char **elem)
 {
+	char	*opstr;
+
 	printf(RED"get_opcode:\n"RESET);
+	printf("elem[0] = %s\n", elem[0]);
+	if (elem[1])
+		printf("elem[1] = %s\n", elem[1]);
+	opstr = get_opstr(elem);
+	if (!opstr)
+		return NULL;
+	printf("opstr = %s\n", opstr);
 	(void)instruction;
 	(void)elem;
 	return NULL;
