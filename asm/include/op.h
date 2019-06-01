@@ -94,4 +94,5 @@ typedef struct		s_op
 	int		thefuck;
 }			t_op;
 
+t_op			g_op_tab[17];
 #endif

@@ -32,18 +32,24 @@ char		*get_opstr(char **elem)
 t_error		get_opcode(t_instruction *instruction, char **elem)
 {
 	char	*opstr;
+	int	i;
 
 	printf(RED"get_opcode:\n"RESET);
-	printf("elem[0] = %s\n", elem[0]);
-	if (elem[1])
-		printf("elem[1] = %s\n", elem[1]);
 	opstr = get_opstr(elem);
 	if (!opstr)
 		return NULL;
-	printf("opstr = %s\n", opstr);
-	(void)instruction;
-	(void)elem;
-	return NULL;
+	i = 0;
+	while (g_op_tab[i].name)
+	{
+		if (ft_strcmp(g_op_tab[i].name, opstr) == 0)
+		{
+			instruction->opcode = g_op_tab[i].opcode;
+			printf("opcode = %d\n", instruction->opcode);
+			return NULL;
+		}
+		i++;
+	}
+	return ft_strjoin("invalid operation: ", opstr);
 }
 
 /*
