@@ -29,6 +29,7 @@ t_error		assembler(char *filename)
 	t_vector	instructions;
 
 	initChamp(&champ);
+	VECTOR_INIT(&instructions);
 	err = parser(&champ, filename);
 	if (err)
 		return err;
@@ -38,5 +39,6 @@ t_error		assembler(char *filename)
 	err = write_file(&champ, &instructions);
 	if (err)
 		return err;
+	VECTOR_FREE(&instructions);
 	return NULL;
 }

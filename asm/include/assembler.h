@@ -62,7 +62,7 @@ typedef struct			s_instruction
 typedef struct			s_label
 {
 	char			*name;
-	uint32_t		offset;
+	size_t			offset;
 }				t_label;
 
 size_t				g_offset;

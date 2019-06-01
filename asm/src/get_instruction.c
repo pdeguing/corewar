@@ -8,6 +8,7 @@
 */
 t_error		get_opcode(t_instruction *instruction, char **elem)
 {
+	printf(RED"get_opcode:\n"RESET);
 	(void)instruction;
 	(void)elem;
 	return NULL;
@@ -19,6 +20,7 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 */
 void		set_encoding_byte(t_instruction *instruction)
 {
+	printf(RED"set_encoding_byte:\n"RESET);
 	(void)instruction;
 }
 
@@ -29,6 +31,7 @@ void		set_encoding_byte(t_instruction *instruction)
 */
 void		update_offset(t_instruction *instruction)
 {
+	printf(RED"update_offset:\n"RESET);
 	(void)instruction;
 }
 
@@ -41,6 +44,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	t_instruction	*new;
 	t_error		err;
 
+	printf(RED"get_instruction:\n"RESET);
 	// if len(elem) is <= 1 or elem[1] is a comment, set dst = NULL;
 	new = malloc(sizeof(t_instruction));
 	if (!new)

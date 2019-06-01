@@ -33,27 +33,26 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	t_instruction	*new_instruction;
 	t_error		err;
 
+	printf(RED"parse_line:\n"RESET);
 	new_label = NULL;
 	new_instruction = NULL;
-
 	replace(line, TAB, WHITE_SPACE);
 	replace(line, WHITE_SPACE, SEPARATOR_CHAR);
 	elem = ft_strsplit(line, SEPARATOR_CHAR);
 	if (!elem)
 		return ft_strdup("could not split the line");
-
 	err = get_label(&new_label, elem);
 	if (err)
 		return err;
 	if (new_label)
 		VECTOR_ADD(labels, new_label);
-
 	err = get_instruction(&new_instruction, elem);
+	printf(RED"parse_line1:\n"RESET);
 	if (err)
 		return err;
 	if (new_instruction)
 		VECTOR_ADD(instructions, new_instruction);
-
+	printf(RED"parse_line2:\n"RESET);
 	return NULL;
 }
 
@@ -63,6 +62,7 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 */
 t_error		feed_references(t_vector *instructions, t_vector *labels)
 {
+	printf(RED"feed_references:\n"RESET);
 	(void)instructions;
 	(void)labels;
 	return NULL;
@@ -79,21 +79,23 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	t_vector	labels;
 	t_error		err;
 
+	printf(RED"lexer:\n"RESET);
 	VECTOR_INIT(&labels);
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
-		return ft_strdup("Could not split into array of lines");
+		return ft_strdup("could not split into array of lines");
 	i = 0;
 	while (lines[i])
 	{
-		parse_line(instructions, &labels, lines[i]);
+		err = parse_line(instructions, &labels, lines[i]);
+		if (err)
+			return err;
 		i++;
 
 	}
 	err = feed_references(instructions, &labels);
 	if (err)
 		return err;
-	// free(labels); we don't need the label array anymore once we have instructions
 	return NULL;
 }
 
