@@ -6,7 +6,7 @@
 #    By: anjansse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/28 21:57:22 by anjansse          #+#    #+#              #
-#    Updated: 2019/05/28 14:26:02 by anjansse         ###   ########.fr        #
+#    Updated: 2019/06/01 11:46:41 by anjansse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ INCLUDES	= -I include/
 
 CC		= gcc
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 LLIB		= libft.a
 
@@ -29,13 +29,15 @@ lib:
 	@cp libft/libft.a .
 	@echo "\t\x1b[92m✓\x1b[0m\n"
 
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
 $(NAME):
 	@echo ""
 	@echo -n 'Compiling Program...'
 	@cp ../libft/libft.a .
-	@$(CC) $(CFLAG) $(SRCS) $(INCLUDES) $(LLIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(SRCS) $(INCLUDES) $(LLIB) -o $(NAME)
 	@echo "\t\x1b[92m✓✓\x1b[0m\n"
 
 totall: lib all

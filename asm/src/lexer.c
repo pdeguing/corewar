@@ -83,7 +83,7 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	VECTOR_INIT(&labels);
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
-		return ft_strdup("could not split into array of lines");
+		return ft_strdup(RED"could not split into array of lines"RESET);
 	i = 0;
 	while (lines[i])
 	{
