@@ -65,6 +65,8 @@ typedef struct			s_label
 	uint32_t		offset;
 }				t_label;
 
+size_t				g_offset;
+
 t_error		assembler(char *filename);
 void		initChamp(t_champ *champ);
 t_error		lexer(t_vector *instructions, t_champ *champ);
@@ -75,5 +77,13 @@ t_error		write_file(t_champ *champ, t_vector *instructions);
 t_error		getName(char **dst, int fd);
 t_error		getComment(char **dst, int fd);
 t_error		getContent(char **dst, int fd);
+
+t_error		get_label(t_label **new_label, char **elem);
+
+t_error		get_opcode(t_instruction *instruction, char **elem);
+void		set_encoding_byte(t_instruction *instruction);
+void		update_offset(t_instruction *instruction);
+t_error		get_args(t_instruction *instruction, char **elem);
+t_error		get_instruction(t_instruction **dst, char **elem);
 
 #endif

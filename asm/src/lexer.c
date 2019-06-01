@@ -24,92 +24,6 @@ static void	replace(char *str, char a, char b)
 }
 
 /*
-** Gets label from first item of elem by taking what comes before LABEL_CHAR.
-** Verifies that label if properly formatted with LABEL_CHARS.
-** Allocate label struct, fill it with name and offset and assign it
-** to new_label. We get the offset by looking at global.
-*/
-t_error		get_label(t_label **new_label, char **elem)
-{
-	(void)new_label;
-	(void)elem;
-	(void)g_offset;
-	return NULL;
-}
-
-/*
-** Gets the opcode from elem by looking at first elem, to check if op string is
-** contained after LABEL_CHAR, if not, then by looking at second elem.
-** Once we have op string, we check op array to see if the string is
-** valid and to get the corresponding opcode and assign to dst.
-*/
-t_error		get_opcode(t_instruction *instruction, char **elem)
-{
-	(void)instruction;
-	(void)elem;
-	return NULL;
-}
-
-/*
-** Gets the arguments of the instruction. First checks how many arguments are
-** expected for this opcode, then tries to extract them from elem and verifies
-** the formating. For each argument, we need to create a corresponding
-** t_argument struct, and feed the label reference if appropriate, the type, the
-** compiled size by looking at 'thefuck' in t_op struct and assigning its value
-** in case it is not a reference.
-*/
-t_error		get_args(t_instruction *instruction, char **elem)
-{
-	(void)instruction;
-	(void)elem;
-	return NULL;
-}
-
-/*
-** Sets the encoding byte of instruction by looking if this op has one and then
-** checking the type of the arguments.
-*/
-void		set_encoding_byte(t_instruction *instruction)
-{
-	(void)instruction;
-}
-
-/*
-** Updates current offset (number of bytes of instructions already parsed) by 
-** incrementing with the byte size of instruction. The byte size of instruction
-** is: opcode + encoding + sum(arguments size).
-*/
-void		update_offset(t_instruction *instruction)
-{
-	(void)instruction;
-}
-
-/*
-** Gets the instruction, if it exists, from the split elements of the line.
-** First allocates new instruction struct, then feed it field by field.
-*/
-t_error		get_instruction(t_instruction **dst, char **elem)
-{
-	t_instruction	*new;
-	t_error		err;
-
-	// if len(elem) is <= 1 or elem[1] is a comment, set dst = NULL;
-	new = malloc(sizeof(t_instruction));
-	if (!new)
-		return ft_strdup("could not allocate memory");
-	*dst = new;
-	err = get_opcode(new, elem);
-	if (err)
-		return err;
-	err = get_args(new, elem);
-	if (err)
-		return err;
-	set_encoding_byte(new);
-	update_offset(new);
-	return NULL;
-}
-
-/*
  ** Parses a line into an instruction and possibly a label.
  */
 t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
@@ -181,6 +95,29 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 		return err;
 	// free(labels); we don't need the label array anymore once we have instructions
 	return NULL;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// split champ->content into array of lines
 	// for each line, split by space:
 	//
@@ -198,5 +135,3 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	// 			else if anything else
 	// 				format error
 	//
-	return NULL;
-}
