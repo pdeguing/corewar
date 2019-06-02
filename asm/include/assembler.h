@@ -61,6 +61,7 @@ typedef struct			s_instruction
 	int			n_args;
 	t_argument		args[3];
 	size_t			size;
+	size_t			offset;
 }				t_instruction;
 
 typedef struct			s_label
@@ -89,5 +90,7 @@ void		set_encoding_byte(t_instruction *instruction);
 void		set_size(t_instruction *instruction);
 t_error		get_args(t_instruction *instruction, char **elem);
 t_error		get_instruction(t_instruction **dst, char **elem);
+
+void		debug_print_instructions(t_vector *);
 
 #endif

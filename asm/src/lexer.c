@@ -93,6 +93,7 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 		i++;
 
 	}
+	//debug_print_instructions(instructions);
 	err = feed_references(instructions, &labels);
 	if (err)
 		return err;

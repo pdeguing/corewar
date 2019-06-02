@@ -132,6 +132,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	set_encoding_byte(new);
 	printf(PURPLE"encoding_byte[%d] = %X\n"RESET, new->opcode, new->encoding_byte);
 	set_size(new);
+	new->offset = g_offset;
 	g_offset += new->size;
 	return NULL;
 }
