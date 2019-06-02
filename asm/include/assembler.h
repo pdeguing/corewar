@@ -74,6 +74,7 @@ size_t				g_offset;
 
 t_error		assembler(char *filename);
 void		initChamp(t_champ *champ);
+t_error		feed_references(t_vector *, t_vector *);
 t_error		lexer(t_vector *instructions, t_champ *champ);
 t_error		verifyFilename(char *filename);
 t_error		fillChamp(t_champ *champ, int fd);
