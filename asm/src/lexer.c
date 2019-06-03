@@ -19,6 +19,7 @@ uint32_t			swap_endian(uint32_t num)
 /*
 ** Replaces in str every occurence of a by b.
 */
+
 static void	replace(char *str, char a, char b)
 {
 	while (*str)
@@ -32,6 +33,7 @@ static void	replace(char *str, char a, char b)
 /*
 ** Parses a line into an instruction and possibly a label.
 */
+
 t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 {
 	char		**elem;
@@ -39,7 +41,6 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	t_instruction	*new_instruction;
 	t_error		err;
 
-	//printf(PURPLE"parse_line()\n"RESET);//
 	new_label = NULL;
 	new_instruction = NULL;
 	replace(line, TAB, WHITE_SPACE);
@@ -53,12 +54,10 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	if (new_label)
 		VECTOR_ADD(labels, new_label);
 	err = get_instruction(&new_instruction, elem);
-	//printf(RED"parse_line1:\n"RESET);
 	if (err)
 		return err;
 	if (new_instruction)
 		VECTOR_ADD(instructions, new_instruction);
-	//printf(RED"parse_line2:\n"RESET);
 	return NULL;
 }
 
@@ -66,6 +65,7 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 ** Transforms the t_champ struct into a list of instructions, verifies
 ** that instructions are valid and returns err if they are not.
 */
+
 t_error		lexer(t_vector *instructions, t_champ *champ)
 {
 	char		**lines;
@@ -73,7 +73,6 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	t_vector	labels;
 	t_error		err;
 
-	//printf(PURPLE"lexer()\n"RESET);//
 	VECTOR_INIT(&labels);
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
@@ -88,7 +87,6 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 		i++;
 
 	}
-	//debug_print_instructions(instructions);
 	err = feed_references(instructions, &labels);
 	if (err)
 		return err;

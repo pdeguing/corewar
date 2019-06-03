@@ -7,6 +7,7 @@
 ** of an assembleur, but an amelioration would be to implemented a direct
 ** table.
 */
+
 t_error		get_reference(int *value, char *ref, t_vector *labels)
 {
 	int		i;
@@ -30,6 +31,7 @@ t_error		get_reference(int *value, char *ref, t_vector *labels)
 ** Feeds the label references in instructions' arguments with the according
 ** label offset. Return an error if the label does not exist.
 */
+
 t_error		feed_references(t_vector *instructions, t_vector *labels)
 {
 	int		i;
@@ -38,7 +40,6 @@ t_error		feed_references(t_vector *instructions, t_vector *labels)
 	t_error		err;
 	int		value;
 
-	//printf(PURPLE"feed_references()\n"RESET);//
 	i = 0;
 	while (i < instructions->size)
 	{

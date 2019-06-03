@@ -6,7 +6,6 @@ static t_error		get_value(t_instruction *inst, char *elem, int n)
 
 	i = 0;
 	inst->args[n].label = NULL;
-	printf(RED"%s\n"RESET, elem);
 	if (inst->args[n].type == REG_CODE)
 		inst->args[n].value = ft_atoi(ft_strsub(elem, 1, ft_strlen(elem)));
 	else if (inst->args[n].type == DIR_CODE)
@@ -33,9 +32,10 @@ static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 
 	count = 0;
 	tmp = current;
+	printf(GREEN"%s\n"RESET, elem[current]);
 	while (current < (tmp + g_op_tab[n].n_param))
 	{
-		if (elem[current][0] == 'r')
+		if (elem[current] && elem[current][0] == 'r')
 		{
 			inst->args[count].type = REG_CODE;
 			inst->args[count].size = 1;
@@ -44,20 +44,17 @@ static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 			inst->args[count].type = DIR_CODE;
 		else if (ft_isdigit(elem[current][0]) || (elem[current][0] == '-' && ft_isdigit(elem[current][1])))
 			inst->args[count].type = IND_CODE;
-		if (inst->args[count].type == IND_CODE || (inst->args[count].type == DIR_CODE && \
-					g_op_tab[n].thefuck == 1))
+		if (inst->args[count].type == IND_CODE || (inst->args[count].type == DIR_CODE && g_op_tab[n].thefuck == 1))
 			inst->args[count].size = 2;
 		else if (inst->args[count].type == DIR_CODE && g_op_tab[n].thefuck == 0)
 			inst->args[count].size = 4;
 		get_value(inst, elem[current], count);
-//		printf(GREEN"LABEL = %s\tTYPE = %d\tSIZE = %zu\tVALUE = %d\n\n"RESET, inst->args[count].label, inst->args[count].type, inst->args[count].size, inst->args[count].value);
 		current++;
 		count++;
 	}
 	if (count != g_op_tab[n].n_param)
 		return ft_strdup(RED"Number of parameters invalid"RESET);
 	return NULL;
-
 }
 
 static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
@@ -91,7 +88,6 @@ t_error		get_args(t_instruction *instruction, char **elem)
 {
 	int		i;
 
-	//printf(GREEN"get_args()\n"RESET);//
 	i = -1;
 	while (elem[1] && elem[++i])
 	{
@@ -99,7 +95,6 @@ t_error		get_args(t_instruction *instruction, char **elem)
 			i++;
 		if (elem[i])
 			dispatch_arg(instruction, elem, i);
-		//printf(GREEN"%s\n"RESET, elem[i]);
 	}
 	return NULL;
 }

@@ -17,7 +17,9 @@ int		main(int ac, char **av)
 		err = assembler(av[1]);
 		if (err)
 		{
-			ft_printf("%s\n", err);
+			ft_putstr(err);
+			ft_putchar('\n');
+			free(err);
 			return 1;
 		}
 	}

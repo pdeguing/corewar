@@ -46,7 +46,6 @@ t_error			print_instruction(t_instruction *ins, int fd)
 	uint32_t	tmp;
 	int			i;
 
-	printf(PURPLE"instruction: %d / %d / %d\n"RESET, ins->args[0].value, ins->args[1].value, ins->args[2].value);//
 	write(fd, &ins->opcode, 1);
 	if (ins->encoding_byte)
 		write(fd, &ins->encoding_byte, 1);
@@ -89,12 +88,12 @@ static t_error		print_instructions(t_vector *instructions, int fd)
 /*
 ** Writes header and compiled instructions to .cor file.
 */
+
 t_error		write_file(t_champ *champ, t_vector *instructions)
 {
 	t_error err;
 	int	fd;
 
-	//printf(PURPLE"write_file()\n"RESET);//
 	fd = 0;
 	err = open_file(&fd, champ);
 	if (err)
