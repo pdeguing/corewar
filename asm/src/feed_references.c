@@ -16,7 +16,7 @@ t_error		get_reference(int *value, char *ref, t_vector *labels)
 	while (i < labels->size)
 	{
 		label = (t_label *)vector_get(labels, i);
-		if (ft_strcmp(ref, label->name))
+		if (!ft_strcmp(ref, label->name))
 		{
 			*value = label->offset;
 			return NULL; ;
@@ -38,7 +38,7 @@ t_error		feed_references(t_vector *instructions, t_vector *labels)
 	t_error		err;
 	int		value;
 
-	printf(RED"feed_references:\n"RESET);
+	//printf(RED"feed_references:\n"RESET);
 	i = 0;
 	while (i < instructions->size)
 	{
@@ -54,6 +54,7 @@ t_error		feed_references(t_vector *instructions, t_vector *labels)
 					return err;
 				instruction->args[j].value = value - instruction->offset;
 			}
+			j++;
 		}
 		i++;
 	}

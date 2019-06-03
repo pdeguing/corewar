@@ -47,7 +47,7 @@ static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 		else if (inst->args[count].type == DIR_CODE && g_op_tab[n].thefuck == 0)
 			inst->args[count].size = 4;
 		get_value(inst, elem[current], count);
-		printf(GREEN"LABEL = %s\tTYPE = %d\tSIZE = %zu\tVALUE = %d\n\n"RESET, inst->args[count].label, inst->args[count].type, inst->args[count].size, inst->args[count].value);
+//		printf(GREEN"LABEL = %s\tTYPE = %d\tSIZE = %zu\tVALUE = %d\n\n"RESET, inst->args[count].label, inst->args[count].type, inst->args[count].size, inst->args[count].value);
 		current++;
 		count++;
 	}
@@ -67,6 +67,7 @@ static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
 	{
 		if (!ft_strcmp(elem[current], g_op_tab[i].name))
 		{
+			inst->n_args = g_op_tab[i].n_param;
 			fill_arg(inst, elem, ++current, i);
 			break ;
 		}

@@ -33,7 +33,7 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	t_instruction	*new_instruction;
 	t_error		err;
 
-	printf(RED"parse_line:\n"RESET);
+	//printf(RED"parse_line:\n"RESET);
 	new_label = NULL;
 	new_instruction = NULL;
 	replace(line, TAB, WHITE_SPACE);
@@ -47,12 +47,12 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	if (new_label)
 		VECTOR_ADD(labels, new_label);
 	err = get_instruction(&new_instruction, elem);
-	printf(RED"parse_line1:\n"RESET);
+	//printf(RED"parse_line1:\n"RESET);
 	if (err)
 		return err;
 	if (new_instruction)
 		VECTOR_ADD(instructions, new_instruction);
-	printf(RED"parse_line2:\n"RESET);
+	//printf(RED"parse_line2:\n"RESET);
 	return NULL;
 }
 
@@ -67,7 +67,7 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	t_vector	labels;
 	t_error		err;
 
-	printf(RED"lexer:\n"RESET);
+	//printf(RED"lexer:\n"RESET);
 	VECTOR_INIT(&labels);
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)

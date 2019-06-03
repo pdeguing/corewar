@@ -13,3 +13,17 @@ void	debug_print_instructions(t_vector *v)
 		i++;
 	}
 }
+
+void	debug_print_labels(t_vector *v)
+{
+	int		i;
+	t_label		*item;
+
+	i = 0;
+	while (i < v->size)
+	{
+		item = (t_label *)vector_get(v, i);
+		ft_printf("label: %s / %d\n", item->name, item->offset);
+		i++;
+	}
+}

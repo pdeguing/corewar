@@ -50,7 +50,7 @@ typedef struct			s_argument
 	char			*label;
 	int			type;
 	size_t			size;
-	int			value;
+	uint32_t		value;
 
 }				t_argument;
 
@@ -93,5 +93,6 @@ t_error		get_args(t_instruction *instruction, char **elem);
 t_error		get_instruction(t_instruction **dst, char **elem);
 
 void		debug_print_instructions(t_vector *);
+void		debug_print_labels(t_vector *);
 
 #endif

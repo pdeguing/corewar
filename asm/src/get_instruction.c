@@ -34,7 +34,7 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 	char	*opstr;
 	int	i;
 
-	printf(RED"get_opcode:\n"RESET);
+	//printf(RED"get_opcode:\n"RESET);
 	opstr = get_opstr(elem);
 	if (!opstr)
 		return NULL;
@@ -44,7 +44,7 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 		if (ft_strcmp(g_op_tab[i].name, opstr) == 0)
 		{
 			instruction->opcode = g_op_tab[i].opcode;
-			printf("opcode = %d\n", instruction->opcode);
+			//printf("opcode = %d\n", instruction->opcode);
 			return NULL;
 		}
 		i++;
@@ -61,7 +61,7 @@ void		set_encoding_byte(t_instruction *instruction)
 	uint32_t	args[3];
 	int		i;
 
-	printf(RED"set_encoding_byte:\n"RESET);
+	//printf(RED"set_encoding_byte:\n"RESET);
 	args[0] = 0;
 	args[1] = 0;
 	args[2] = 0;
@@ -93,7 +93,7 @@ void		set_size(t_instruction *instruction)
 {
 	int	i;
 
-	printf(RED"update_offset:\n"RESET);
+	//printf(RED"update_offset:\n"RESET);
 	instruction->size = 0;
 	if (!instruction->opcode)
 		return ;
@@ -117,7 +117,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	t_instruction	*new;
 	t_error		err;
 
-	printf(RED"get_instruction:\n"RESET);
+	//printf(RED"get_instruction:\n"RESET);
 	// if len(elem) is <= 1 or elem[1] is a comment, set dst = NULL;
 	new = malloc(sizeof(t_instruction));
 	if (!new)
@@ -130,7 +130,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	if (err)
 		return err;
 	set_encoding_byte(new);
-	printf(PURPLE"encoding_byte[%d] = %X\n"RESET, new->opcode, new->encoding_byte);
+	//printf(PURPLE"encoding_byte[%d] = %X\n"RESET, new->opcode, new->encoding_byte);
 	set_size(new);
 	new->offset = g_offset;
 	g_offset += new->size;
