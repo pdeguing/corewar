@@ -11,6 +11,7 @@
 /*
 ** Sets all members of t_champ struct to NULL.
 */
+
 void		initChamp(t_champ *champ)
 {
 	champ->name = NULL;
@@ -22,6 +23,7 @@ void		initChamp(t_champ *champ)
 ** Translates assembly source file into a binary file for Corewar virtual
 ** machine.
 */
+
 t_error		assembler(char *filename)
 {
 	t_error		err;

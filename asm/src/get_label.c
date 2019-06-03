@@ -20,6 +20,7 @@ static int	is_invalid_label(char *label)
 ** Allocate label struct, fill it with name and offset and assign it
 ** to new_label. We get the offset by looking at global.
 */
+
 t_error		get_label(t_label **new_label, char **elem)
 {
 	char	*label_char;
@@ -27,7 +28,6 @@ t_error		get_label(t_label **new_label, char **elem)
 	t_label	*new;
 	char	*name;
 
-	//printf(RED"get_label()\n"RESET);//
 	label_char = ft_strchr(elem[0], LABEL_CHAR);
 	if (!label_char)
 		return NULL;
@@ -43,8 +43,6 @@ t_error		get_label(t_label **new_label, char **elem)
 		return ft_strdup("could not allocate t_label");
 	new->name = name;
 	new->offset = g_offset;
-	//printf("new->name = %s / new->offset = %zu\n", new->name, new->offset);
 	*new_label = new;
 	return NULL;
 }
-

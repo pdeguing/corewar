@@ -34,7 +34,6 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 	char	*opstr;
 	int	i;
 
-	//printf(GREEN"get_opcode()\n"RESET);//
 	opstr = get_opstr(elem);
 	if (!opstr)
 		return NULL;
@@ -44,7 +43,6 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 		if (ft_strcmp(g_op_tab[i].name, opstr) == 0)
 		{
 			instruction->opcode = g_op_tab[i].opcode;
-			//printf("opcode = %d\n", instruction->opcode);
 			return NULL;
 		}
 		i++;
@@ -56,20 +54,17 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 ** Sets the encoding byte of instruction by looking if this op has one and then
 ** checking the type of the arguments.
 */
+
 void		set_encoding_byte(t_instruction *instruction)
 {
 	uint32_t	args[3];
 	int		i;
 
-	//printf(GREEN"set_encoding_byte()\n"RESET);//
 	args[0] = 0;
 	args[1] = 0;
 	args[2] = 0;
-	//printf(RED"ici?\n"RESET);//
-	//printf("opcode = %d\n", instruction->opcode);//
 	if (instruction->opcode <= 0 || !g_op_tab[instruction->opcode - 1].what)
 		return ;
-	//printf(GREEN"fsociety\n"RESET);//
 	instruction->encoding_byte = 0;
 	i = 0;
 	while (i < instruction->n_args)
@@ -82,7 +77,6 @@ void		set_encoding_byte(t_instruction *instruction)
 			args[i] = IND_CODE;
 		i++;
 	}
-	//printf("args[0] = %d / args[1] = %d / args[2] = %d\n", args[0], args[1], args[2]);
 	instruction->encoding_byte += args[0] << 6;
 	instruction->encoding_byte += args[1] << 4;
 	instruction->encoding_byte += args[2] << 2;
@@ -92,11 +86,11 @@ void		set_encoding_byte(t_instruction *instruction)
 ** Calculate byte size of instruction. The byte size of instruction
 ** is: opcode + encoding + sum(arguments size).
 */
+
 void		set_size(t_instruction *instruction)
 {
 	int	i;
 
-	//printf(GREEN"update_offset()\n"RESET);//
 	instruction->size = 0;
 	if (!instruction->opcode)
 		return ;
@@ -115,13 +109,12 @@ void		set_size(t_instruction *instruction)
 ** Gets the instruction, if it exists, from the split elements of the line.
 ** First allocates new instruction struct, then feed it field by field.
 */
+
 t_error		get_instruction(t_instruction **dst, char **elem)
 {
 	t_instruction	*new;
 	t_error		err;
 
-	//printf(RED"get_instruction()\n"RESET);//
-	// if len(elem) is <= 1 or elem[1] is a comment, set dst = NULL;
 	new = malloc(sizeof(t_instruction));
 	if (!new)
 		return ft_strdup("could not allocate memory");
@@ -134,7 +127,6 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	if (err)
 		return err;
 	set_encoding_byte(new);
-	//printf(PURPLE"encoding_byte[%d] = %X\n"RESET, new->opcode, new->encoding_byte);
 	set_size(new);
 	new->offset = g_offset;
 	g_offset += new->size;
