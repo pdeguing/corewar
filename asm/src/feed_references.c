@@ -38,7 +38,7 @@ t_error		feed_references(t_vector *instructions, t_vector *labels)
 	t_error		err;
 	int		value;
 
-	//printf(RED"feed_references:\n"RESET);
+	printf(PURPLE"feed_references()\n"RESET);//
 	i = 0;
 	while (i < instructions->size)
 	{

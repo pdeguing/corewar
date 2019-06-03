@@ -88,6 +88,7 @@ t_error		get_args(t_instruction *instruction, char **elem)
 {
 	int		i;
 
+	printf(GREEN"get_args()\n"RESET);//
 	i = -1;
 	while (elem[1] && elem[++i])
 	{

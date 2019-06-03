@@ -80,6 +80,7 @@ t_error		write_file(t_champ *champ, t_vector *instructions)
 	t_error err;
 	int	fd;
 
+	printf(PURPLE"write_file()\n"RESET);//
 	fd = 0;
 	err = open_file(&fd, champ);
 	if (err)
