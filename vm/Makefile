@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= asm
+NAME		= corewar
 GENERAL		= main.c vector.c
 SRCS		= $(addprefix src/, $(GENERAL))
 
