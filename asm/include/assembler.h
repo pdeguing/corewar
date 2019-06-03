@@ -92,6 +92,8 @@ void		set_size(t_instruction *instruction);
 t_error		get_args(t_instruction *instruction, char **elem);
 t_error		get_instruction(t_instruction **dst, char **elem);
 
+uint32_t	swap_endian(uint32_t num);
+
 void		debug_print_instructions(t_vector *);
 void		debug_print_labels(t_vector *);
 

@@ -39,7 +39,8 @@ static t_error		print_header(t_champ *champ, int fd)
 */
 t_error			print_instruction(t_instruction *ins, int fd)
 {
-	int	i;
+	uint32_t	tmp;
+	int			i;
 
 	write(fd, &ins->opcode, 1);
 	if (ins->encoding_byte)
@@ -47,7 +48,8 @@ t_error			print_instruction(t_instruction *ins, int fd)
 	i = 0;
 	while (i < ins->n_args)
 	{
-		write(fd, &ins->args[i].value, ins->args[i].size);
+		tmp = swap_endian((uint32_t)ins->args[i].value);
+		write(fd, &tmp, ins->args[i].size);
 		i++;
 	}
 	return NULL;

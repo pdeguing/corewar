@@ -10,6 +10,12 @@
 
 size_t		g_offset = 0;
 
+uint32_t			swap_endian(uint32_t num)
+{
+	return ((num >> 24) & 0xff) | ((num << 8) & 0xff0000) | ((num >> 8) &\
+			0xff00) | ((num << 24) & 0xff000000);
+}
+
 /*
 ** Replaces in str every occurence of a by b.
 */
@@ -87,42 +93,3 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 		return err;
 	return NULL;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// split champ->content into array of lines
-	// for each line, split by space:
-	//
-	// 			if label:
-	// 				append label to label_array,
-	// 					with offset = total_instruction_size before label
-	// 			if instructions:
-	// 				create instruction struct
-	// 				determine instruction size
-	// 				add instruction size to total_instruction_size
-	// 				append instruction to instruction_array
-	// 					check format
-	// 			if #:
-	// 				ignore rest
-	// 			else if anything else
-	// 				format error
-	//
