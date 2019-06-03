@@ -22,8 +22,6 @@ int		main(int ac, char **av)
 		}
 	}
 	else
-	{
 		ft_printf("usage: ./asm monchampion.s\n");
-	}
 	return 0;
 }

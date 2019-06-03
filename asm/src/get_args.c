@@ -6,20 +6,23 @@ static t_error		get_value(t_instruction *inst, char *elem, int n)
 
 	i = 0;
 	inst->args[n].label = NULL;
+	printf(RED"%s\n"RESET, elem);
 	if (inst->args[n].type == REG_CODE)
-		inst->args[n].value = ft_atoi(ft_strsub(elem, 1, ft_strlen(elem) - 1));
+		inst->args[n].value = ft_atoi(ft_strsub(elem, 1, ft_strlen(elem)));
 	else if (inst->args[n].type == DIR_CODE)
 	{
 		if (elem[1] == ':')
 		{
-			inst->args[n].label = ft_strsub(elem, 2, ft_strlen(elem) - 1);
+			inst->args[n].label = ft_strsub(elem, 2, ft_strlen(elem));
 			inst->args[n].value = 0;
 		}
-		else if (ft_isdigit(elem[1]))
-			inst->args[n].value = ft_atoi(ft_strsub(elem, 1, ft_strlen(elem) - 1));
+		else if (ft_isdigit(elem[1]) || elem[1] == '-')
+			inst->args[n].value = ft_atoi(ft_strsub(elem, 1, ft_strlen(elem)));
 	}
 	else if (inst->args[n].type == IND_CODE)
-		inst->args[n].value = ft_atoi(ft_strsub(elem, 0, ft_strlen(elem) - 1));
+	{
+		inst->args[n].value = ft_atoi(ft_strsub(elem, 0, ft_strlen(elem)));
+	}
 	return NULL;
 }
 
@@ -39,7 +42,7 @@ static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 		}
 		else if (elem[current][0] == '%')
 			inst->args[count].type = DIR_CODE;
-		else if (ft_isdigit(elem[current][0]))
+		else if (ft_isdigit(elem[current][0]) || (elem[current][0] == '-' && ft_isdigit(elem[current][1])))
 			inst->args[count].type = IND_CODE;
 		if (inst->args[count].type == IND_CODE || (inst->args[count].type == DIR_CODE && \
 					g_op_tab[n].thefuck == 1))

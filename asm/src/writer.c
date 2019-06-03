@@ -1,4 +1,5 @@
 #include <assembler.h>
+#include <sys/stat.h>
 
 /*
 ** Verifies that the champ has proper formatting and opens the destination file.
@@ -15,6 +16,7 @@ static t_error		open_file(int *fd, t_champ *champ)
 	*fd = open(file_name, O_WRONLY | O_CREAT);
 	if (*fd < 0)
 		return ft_strdup(RED"File couldn't be created"RESET);
+	chmod(file_name, S_IRWXU);
 	ft_printf("writing output to %s\n", file_name);
 	free(file_name);
 	return NULL;
