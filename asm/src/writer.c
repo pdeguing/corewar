@@ -48,8 +48,18 @@ t_error			print_instruction(t_instruction *ins, int fd)
 	i = 0;
 	while (i < ins->n_args)
 	{
-		tmp = swap_endian((uint32_t)ins->args[i].value);
-		write(fd, &tmp, ins->args[i].size);
+		if (ins->args[i].size == 4 || ins->args[i].size == 2)
+		{
+			tmp = swap_endian(ins->args[i].value);
+			ft_printf("ORI = %x\t\t\tORI = %b\n", ins->args[i].value, ins->args[i].value);
+			ft_printf("TMP = %x\t\tTMP = %b\n", tmp, tmp);
+			if (ins->args[i].size == 2)
+				tmp >>= 16;
+			ft_printf("SHI = %x\t\tSHI = %b\n\n", tmp, tmp);
+			write(fd, &tmp, ins->args[i].size);
+		}
+		else
+			write(fd, &ins->args[i].value, ins->args[i].size);
 		i++;
 	}
 	return NULL;
