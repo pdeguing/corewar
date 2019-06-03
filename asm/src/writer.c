@@ -49,6 +49,7 @@ t_error			print_instruction(t_instruction *ins, int fd)
 	while (i < ins->n_args)
 	{
 		tmp = swap_endian((uint32_t)ins->args[i].value);
+		//tmp = ins->args[i].value;
 		write(fd, &tmp, ins->args[i].size);
 		i++;
 	}
