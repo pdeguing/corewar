@@ -27,7 +27,7 @@ t_error		get_label(t_label **new_label, char **elem)
 	t_label	*new;
 	char	*name;
 
-	printf(RED"get_label()\n"RESET);//
+	//printf(RED"get_label()\n"RESET);//
 	label_char = ft_strchr(elem[0], LABEL_CHAR);
 	if (!label_char)
 		return NULL;

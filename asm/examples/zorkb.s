@@ -1,4 +1,4 @@
-.name "zork"
+.name "zorkb"
 .comment "I'M ALIIIIVE"
 
 hello:		sti r1, %5, %9

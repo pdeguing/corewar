@@ -17,12 +17,14 @@ t_error		getName(char **dst, int fd)
 	char		*name;
 
 	get_next_line(fd, &line);
+	while (*line == COMMENT_CHAR || !*line)
+		get_next_line(fd, &line);
 	while (*line && *line != '"')
 		line++;
 	if (*line)
 		line++;
 	if (line[ft_strlen(line) - 1] != '"')
-		return ft_strdup(RED"Comment not valid"RESET);
+		return ft_strdup(RED"Name not valid"RESET);
 	name = ft_strsub(line, 0, ft_strlen(line) - 1);
 	*dst = name;
 	return NULL;
@@ -37,6 +39,8 @@ t_error		getComment(char **dst, int fd)
 	char		*comment;
 
 	get_next_line(fd, &line);
+	while (*line == COMMENT_CHAR || !*line)
+		get_next_line(fd, &line);
 	while (*line && *line != '"')
 		line++;
 	if (*line)

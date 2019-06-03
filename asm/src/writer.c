@@ -15,6 +15,8 @@ static t_error		open_file(int *fd, t_champ *champ)
 	*fd = open(file_name, O_WRONLY | O_CREAT);
 	if (*fd < 0)
 		return ft_strdup(RED"File couldn't be created"RESET);
+	ft_printf("writing output to %s\n", file_name);
+	free(file_name);
 	return NULL;
 }
 
@@ -25,11 +27,11 @@ static t_error		print_header(t_champ *champ, int fd)
 {
 	header_t	 header;
 
-	header.magic = COREWAR_EXEC_MAGIC;
 	ft_bzero(&header, sizeof(header_t));
+	header.magic = swap_endian(COREWAR_EXEC_MAGIC);
 	ft_strcpy(header.prog_name, champ->name);
 	ft_strcpy(header.comment, champ->comment);
-	header.prog_size = 0;
+	header.prog_size = swap_endian(g_offset);
 	write(fd, &header, sizeof(header_t));
 	return NULL;
 }
@@ -42,30 +44,22 @@ t_error			print_instruction(t_instruction *ins, int fd)
 	uint32_t	tmp;
 	int			i;
 
+	printf(PURPLE"instruction: %d / %d / %d\n"RESET, ins->args[0].value, ins->args[1].value, ins->args[2].value);//
 	write(fd, &ins->opcode, 1);
 	if (ins->encoding_byte)
 		write(fd, &ins->encoding_byte, 1);
 	i = 0;
 	while (i < ins->n_args)
 	{
-<<<<<<< HEAD
 		if (ins->args[i].size == 4 || ins->args[i].size == 2)
 		{
 			tmp = swap_endian(ins->args[i].value);
-			ft_printf("ORI = %x\t\t\tORI = %b\n", ins->args[i].value, ins->args[i].value);
-			ft_printf("TMP = %x\t\tTMP = %b\n", tmp, tmp);
 			if (ins->args[i].size == 2)
 				tmp >>= 16;
-			ft_printf("SHI = %x\t\tSHI = %b\n\n", tmp, tmp);
 			write(fd, &tmp, ins->args[i].size);
 		}
 		else
 			write(fd, &ins->args[i].value, ins->args[i].size);
-=======
-		tmp = swap_endian((uint32_t)ins->args[i].value);
-		//tmp = ins->args[i].value;
-		write(fd, &tmp, ins->args[i].size);
->>>>>>> 6f47230f960a136742e468dd48d12fce17a12767
 		i++;
 	}
 	return NULL;
@@ -98,7 +92,7 @@ t_error		write_file(t_champ *champ, t_vector *instructions)
 	t_error err;
 	int	fd;
 
-	printf(PURPLE"write_file()\n"RESET);//
+	//printf(PURPLE"write_file()\n"RESET);//
 	fd = 0;
 	err = open_file(&fd, champ);
 	if (err)

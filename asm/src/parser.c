@@ -61,7 +61,7 @@ t_error			parser(t_champ *champ, char *filename)
 	int			fd;
 	t_error		err;
 
-	printf(PURPLE"parser()\n"RESET);//
+	//printf(PURPLE"parser()\n"RESET);//
 	err = verifyFilename(filename);
 	if (err)
 	{
