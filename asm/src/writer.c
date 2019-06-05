@@ -12,7 +12,7 @@ static t_error		open_file(int *fd, t_champ *champ)
 		return ft_strdup(RED"Name size is too big"RESET);
 	if (ft_strlen(champ->comment) > COMMENT_LENGTH)
 		return ft_strdup(RED"Comment size is too big"RESET);
-	file_name = ft_strjoin(champ->name, ".cor");
+	file_name = ft_strjoin(champ->fname, ".cor");
 	*fd = open(file_name, O_WRONLY | O_CREAT);
 	if (*fd < 0)
 		return ft_strdup(RED"File couldn't be created"RESET);

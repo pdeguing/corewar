@@ -47,7 +47,7 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 		}
 		i++;
 	}
-	return ft_strjoin("invalid operation: ", opstr);
+	return ft_strjoinfree2("invalid operation: ", opstr);
 }
 
 /*

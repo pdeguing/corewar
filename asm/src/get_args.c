@@ -1,4 +1,11 @@
 #include <assembler.h>
+#include "../include/assembler.h"
+#include "../include/op.h"
+#include "../../libft/includes/libft.h"
+
+/*
+** Extensive function of fill_args, gets the value of the parameters.
+*/
 
 static t_error		get_value(t_instruction *inst, char *elem, int n)
 {
@@ -25,6 +32,35 @@ static t_error		get_value(t_instruction *inst, char *elem, int n)
 	return NULL;
 }
 
+/*
+** Extensive function of fill_args, gets the type and size of the parameters.
+*/
+
+static t_error		get_type(t_instruction *inst, char *elem, int count, int n)
+{
+		if (elem && elem[0] == 'r')
+		{
+			inst->args[count].type = REG_CODE;
+			inst->args[count].size = 1;
+		}
+		else if (elem[0] == '%')
+			inst->args[count].type = DIR_CODE;
+		else if (ft_isdigit(elem[0]) || (elem[0] == '-' &&
+					ft_isdigit(elem[1])))
+			inst->args[count].type = IND_CODE;
+		if (inst->args[count].type == IND_CODE || (inst->args[count].type ==
+					DIR_CODE && g_op_tab[n].thefuck == 1))
+			inst->args[count].size = 2;
+		else if (inst->args[count].type == DIR_CODE && g_op_tab[n].thefuck == 0)
+			inst->args[count].size = 4;
+		return (NULL);
+}
+
+/*
+** Fill inst strcuture for this line, get the size, value and type of
+** the parameters before writing them into the '.s' file.
+*/
+
 static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 {
 	int		count;
@@ -32,30 +68,21 @@ static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 
 	count = 0;
 	tmp = current;
-	printf(GREEN"%s\n"RESET, elem[current]);
 	while (current < (tmp + g_op_tab[n].n_param))
 	{
-		if (elem[current] && elem[current][0] == 'r')
-		{
-			inst->args[count].type = REG_CODE;
-			inst->args[count].size = 1;
-		}
-		else if (elem[current][0] == '%')
-			inst->args[count].type = DIR_CODE;
-		else if (ft_isdigit(elem[current][0]) || (elem[current][0] == '-' && ft_isdigit(elem[current][1])))
-			inst->args[count].type = IND_CODE;
-		if (inst->args[count].type == IND_CODE || (inst->args[count].type == DIR_CODE && g_op_tab[n].thefuck == 1))
-			inst->args[count].size = 2;
-		else if (inst->args[count].type == DIR_CODE && g_op_tab[n].thefuck == 0)
-			inst->args[count].size = 4;
+		get_type(inst, elem[current], count, n);
 		get_value(inst, elem[current], count);
 		current++;
 		count++;
 	}
 	if (count != g_op_tab[n].n_param)
-		return ft_strdup(RED"Number of parameters invalid"RESET);
-	return NULL;
+		return (ft_strdup(RED"Number of parameters invalid"RESET));
+	return (NULL);
 }
+
+/*
+** Dispatches the labels name and sends its id (1 - 17) to fill_arg.
+*/
 
 static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
 {
@@ -72,7 +99,7 @@ static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
 			break ;
 		}
 	}
-	return NULL;
+	return (NULL);
 }
 
 
@@ -84,6 +111,7 @@ static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
 ** compiled size by looking at 'thefuck' in t_op struct and assigning its value
 ** in case it is not a reference.
 */
+
 t_error		get_args(t_instruction *instruction, char **elem)
 {
 	int		i;
@@ -94,7 +122,10 @@ t_error		get_args(t_instruction *instruction, char **elem)
 		if (elem[i + 1] && i == 0 && elem[i][ft_strlen(elem[i]) - 1] == ':')
 			i++;
 		if (elem[i])
+		{
 			dispatch_arg(instruction, elem, i);
+			break ;
+		}
 	}
-	return NULL;
+	return (NULL);
 }

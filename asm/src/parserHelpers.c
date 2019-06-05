@@ -58,7 +58,8 @@ t_error		getContent(char **dst, int fd)
 
 	content = ft_strdup("");
 	while (get_next_line(fd, &tmp) > 0)
-		content = ft_strjoin(ft_strjoin(content, tmp), "\n");
+		content = ft_strjoin(ft_strjoinfree2(content, tmp), "\n");
 	*dst = content;
+	free(content);
 	return (NULL);
 }

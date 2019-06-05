@@ -14,6 +14,7 @@
 
 void		initChamp(t_champ *champ)
 {
+	champ->fname = NULL;
 	champ->name = NULL;
 	champ->comment = NULL;
 	champ->content = NULL;
@@ -34,13 +35,13 @@ t_error		assembler(char *filename)
 	VECTOR_INIT(&instructions);
 	err = parser(&champ, filename);
 	if (err)
-		return err;
+		return (err);
 	err = lexer(&instructions, &champ);
 	if (err)
-		return err;
+		return (err);
 	err = write_file(&champ, &instructions);
 	if (err)
-		return err;
+		return (err);
 	VECTOR_FREE(&instructions);
-	return NULL;
+	return (NULL);
 }

@@ -31,6 +31,7 @@ typedef char*			t_error;
 
 typedef struct			s_champ
 {
+	char			*fname;
 	char			*name;
 	char			*comment;
 	char			*content;

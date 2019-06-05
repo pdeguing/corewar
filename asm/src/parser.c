@@ -47,12 +47,13 @@ t_error			parser(t_champ *champ, char *filename)
 
 	err = verifyFilename(filename);
 	if (err)
-		return err;
+		return (err);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return strerror(errno);
+		return ft_strdup(strerror(errno));
+	champ->fname = ft_strsub(filename, 0, ft_strlen(filename) - 2);
 	err = fillChamp(champ, fd);
 	if (err)
-		return err;
+		return (err);
 	return NULL;
 }

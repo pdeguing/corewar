@@ -10,6 +10,10 @@
 
 size_t		g_offset = 0;
 
+/*
+** Swaps memory from BIG-ENDIAN to LITTLE-ENDIAN or opposite.
+*/
+
 uint32_t			swap_endian(uint32_t num)
 {
 	return ((num >> 24) & 0xff) | ((num << 8) & 0xff0000) | ((num >> 8) &\
@@ -46,8 +50,8 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	replace(line, TAB, WHITE_SPACE);
 	replace(line, WHITE_SPACE, SEPARATOR_CHAR);
 	elem = ft_strsplit(line, SEPARATOR_CHAR);
-	if (!elem || !elem[0])
-		return ft_strdup("could not split the line");
+	if (!elem || !elem[0] || *elem[0] == '#')
+		return NULL;
 	err = get_label(&new_label, elem);
 	if (err)
 		return err;
@@ -85,7 +89,6 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 		if (err)
 			return err;
 		i++;
-
 	}
 	err = feed_references(instructions, &labels);
 	if (err)

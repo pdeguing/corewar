@@ -8,10 +8,10 @@
 ** table.
 */
 
-t_error		get_reference(int *value, char *ref, t_vector *labels)
+t_error				get_reference(int *value, char *ref, t_vector *labels)
 {
-	int		i;
-	t_label		*label;
+	int				i;
+	t_label			*label;
 
 	i = 0;
 	while (i < labels->size)
@@ -20,11 +20,11 @@ t_error		get_reference(int *value, char *ref, t_vector *labels)
 		if (!ft_strcmp(ref, label->name))
 		{
 			*value = label->offset;
-			return NULL; ;
+			return (NULL);
 		}
 		i++;
 	}
-	return ft_strjoin("unknown label: ", ref);
+	return (ft_strjoinfree2("unknown label: ", ref));
 }
 
 /*
@@ -32,13 +32,13 @@ t_error		get_reference(int *value, char *ref, t_vector *labels)
 ** label offset. Return an error if the label does not exist.
 */
 
-t_error		feed_references(t_vector *instructions, t_vector *labels)
+t_error				feed_references(t_vector *instructions, t_vector *labels)
 {
-	int		i;
-	int		j;
+	int				i;
+	int				j;
 	t_instruction	*instruction;
-	t_error		err;
-	int		value;
+	t_error			err;
+	int				value;
 
 	i = 0;
 	while (i < instructions->size)
@@ -52,13 +52,13 @@ t_error		feed_references(t_vector *instructions, t_vector *labels)
 			{
 				err = get_reference(&value, instruction->args[j].label, labels);
 				if (err)
-					return err;
+					return (err);
 				instruction->args[j].value = value - instruction->offset;
 			}
 			j++;
 		}
 		i++;
 	}
-	return NULL;
+	return (NULL);
 }
 

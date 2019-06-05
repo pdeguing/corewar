@@ -36,7 +36,7 @@ t_error		get_label(t_label **new_label, char **elem)
 	if (is_invalid_label(name))
 	{
 		free(name);
-		return ft_strjoin("label name is invalid: ", name);
+		return ft_strjoinfree2("label name is invalid: ", name);
 	}
 	new = malloc(sizeof(t_label));
 	if (!new)
