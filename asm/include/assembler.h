@@ -98,5 +98,6 @@ uint32_t	swap_endian(uint32_t num);
 
 void		debug_print_instructions(t_vector *);
 void		debug_print_labels(t_vector *);
+void		debug_print_darray(char **);
 
 #endif
