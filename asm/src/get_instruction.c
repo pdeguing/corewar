@@ -14,13 +14,13 @@ char		*get_opstr(char **elem)
 		if (*(label_char + 1))
 		{
 			len = ft_strlen(label_char + 1);
-			return ft_strsub(elem[0], label_char + 1 - elem[0], len);
+			return (ft_strsub(elem[0], label_char + 1 - elem[0], len));
 		}
 		if (!elem[1])
-			return NULL;
-		return elem[1];
+			return (NULL);
+		return (elem[1]);
 	}
-	return elem[0];
+	return (elem[0]);
 }
 
 /*
@@ -36,18 +36,18 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 
 	opstr = get_opstr(elem);
 	if (!opstr)
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (g_op_tab[i].name)
 	{
 		if (ft_strcmp(g_op_tab[i].name, opstr) == 0)
 		{
 			instruction->opcode = g_op_tab[i].opcode;
-			return NULL;
+			return (NULL);
 		}
 		i++;
 	}
-	return ft_strjoinfree2("invalid operation: ", opstr);
+	return (ft_strjoinfree2("invalid operation: ", opstr));
 }
 
 /*
@@ -117,18 +117,18 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 
 	new = malloc(sizeof(t_instruction));
 	if (!new)
-		return ft_strdup("could not allocate memory");
+		return (ft_strdup("could not allocate memory"));
 	ft_bzero(new, sizeof(t_instruction));
 	*dst = new;
 	err = get_opcode(new, elem);
 	if (err)
-		return err;
+		return (err);
 	err = get_args(new, elem);
 	if (err)
-		return err;
+		return (err);
 	set_encoding_byte(new);
 	set_size(new);
 	new->offset = g_offset;
 	g_offset += new->size;
-	return NULL;
+	return (NULL);
 }

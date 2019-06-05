@@ -8,10 +8,10 @@ static int	is_invalid_label(char *label)
 	while (*label)
 	{
 		if (!ft_strchr(LABEL_CHARS, *label))
-			return 1;
+			return (1);
 		label++;
 	}
-	return 0;
+	return (0);
 }
 
 /*
@@ -30,13 +30,13 @@ t_error		get_label(t_label **new_label, char **elem)
 
 	label_char = ft_strchr(elem[0], LABEL_CHAR);
 	if (!label_char)
-		return NULL;
+		return (NULL);
 	len = label_char - elem[0];
 	name = ft_strsub(elem[0], 0, len);
 	if (is_invalid_label(name))
 	{
 		free(name);
-		return ft_strjoinfree2("label name is invalid: ", name);
+		return (ft_strjoinfree2("label name is invalid: ", name));
 	}
 	new = malloc(sizeof(t_label));
 	if (!new)
@@ -44,5 +44,5 @@ t_error		get_label(t_label **new_label, char **elem)
 	new->name = name;
 	new->offset = g_offset;
 	*new_label = new;
-	return NULL;
+	return (NULL);
 }
