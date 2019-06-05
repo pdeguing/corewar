@@ -43,10 +43,10 @@ t_error		getComment(char **dst, int fd)
 	size = ft_strlen(line) - 1;
 	if (size >= 0 && line[size] != '"')
 		return ft_strdup(RED"Comment not valid"RESET);
-	if (size >= 0 && size <= 2048)
+	if (size >= 0 && size <= COMMENT_LENGTH)
 		comment = ft_strsub(line, 0, size);
 	else
-		return (ft_strdup(RED"Comment size is too big (max 2048)"RESET));
+		return (ft_strdup(RED"Comment size is too big"RESET));
 	*dst = comment;
 	return (NULL);
 }
