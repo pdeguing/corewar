@@ -36,11 +36,11 @@ t_error		get_label(t_label **new_label, char **elem)
 	if (is_invalid_label(name))
 	{
 		free(name);
-		return (ft_strjoinfree2("label name is invalid: ", name));
+		return (ft_strjoinfree2(RED"label name is invalid: "RESET, name));
 	}
 	new = malloc(sizeof(t_label));
 	if (!new)
-		return ft_strdup("could not allocate t_label");
+		return (ft_strdup(RED"could not allocate t_label"RESET));
 	new->name = name;
 	new->offset = g_offset;
 	*new_label = new;

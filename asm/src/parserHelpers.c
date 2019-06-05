@@ -29,6 +29,7 @@ t_error		getName(char **dst, int fd)
 
 t_error		getComment(char **dst, int fd)
 {
+	int			size;
 	char		*line;
 	char		*comment;
 
@@ -39,9 +40,13 @@ t_error		getComment(char **dst, int fd)
 		line++;
 	if (*line)
 		line++;
-	if (line[ft_strlen(line) - 1] != '"')
+	size = ft_strlen(line) - 1;
+	if (size >= 0 && line[size] != '"')
 		return ft_strdup(RED"Comment not valid"RESET);
-	comment = ft_strsub(line, 0, ft_strlen(line) - 1);
+	if (size >= 0 && size <= 2048)
+		comment = ft_strsub(line, 0, size);
+	else
+		return (ft_strdup(RED"Comment size is too big (max 2048)"RESET));
 	*dst = comment;
 	return (NULL);
 }

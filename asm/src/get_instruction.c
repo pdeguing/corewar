@@ -32,7 +32,7 @@ char		*get_opstr(char **elem)
 t_error		get_opcode(t_instruction *instruction, char **elem)
 {
 	char	*opstr;
-	int	i;
+	int		i;
 
 	opstr = get_opstr(elem);
 	if (!opstr)
@@ -40,14 +40,14 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 	i = 0;
 	while (g_op_tab[i].name)
 	{
-		if (ft_strcmp(g_op_tab[i].name, opstr) == 0)
+		if (!ft_strcmp(g_op_tab[i].name, opstr))
 		{
 			instruction->opcode = g_op_tab[i].opcode;
 			return (NULL);
 		}
 		i++;
 	}
-	return (ft_strjoinfree2("invalid operation: ", opstr));
+	return (ft_strjoinfree2(RED"invalid operation: "RESET, opstr));
 }
 
 /*

@@ -17,7 +17,7 @@ static t_error		open_file(int *fd, t_champ *champ)
 	if (*fd < 0)
 		return ft_strdup(RED"File couldn't be created"RESET);
 	chmod(file_name, S_IRWXU);
-	ft_printf("writing output to %s\n", file_name);
+	ft_printf(GREEN"writing output to \x1b[93m%s\n"RESET, file_name);
 	free(file_name);
 	return NULL;
 }
