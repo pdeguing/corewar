@@ -10,6 +10,7 @@
 static t_error		get_value(t_instruction *inst, char *elem, int n)
 {
 	int		i;
+	int		len;
 
 	i = 0;
 	if (inst->args[n].type == REG_CODE)
@@ -18,7 +19,10 @@ static t_error		get_value(t_instruction *inst, char *elem, int n)
 	{
 		if (elem[1] == ':')
 		{
-			ft_strncpy(inst->args[n].label, elem + 2, ft_strlen(elem + 2));
+			len = ft_strlen(elem + 2);
+			if (len > LABEL_NAME_LENGTH)
+				return (ft_strjoin("reference is invalid: ", elem + 2));
+			ft_strncpy(inst->args[n].label, elem + 2, len);
 			inst->args[n].value = 0;
 		}
 		else if (ft_isdigit(elem[1]) || elem[1] == '-')
