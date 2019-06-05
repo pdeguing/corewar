@@ -40,6 +40,7 @@ t_error				feed_references(t_vector *instructions, t_vector *labels)
 	t_error			err;
 	int				value;
 
+	err = NULL;
 	i = 0;
 	while (i < instructions->size)
 	{

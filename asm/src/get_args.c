@@ -29,7 +29,7 @@ static t_error		get_value(t_instruction *inst, char *elem, int n)
 	{
 		inst->args[n].value = ft_atoi(ft_strsub(elem, 0, ft_strlen(elem)));
 	}
-	return NULL;
+	return (NULL);
 }
 
 /*
@@ -38,7 +38,9 @@ static t_error		get_value(t_instruction *inst, char *elem, int n)
 
 static t_error		get_type(t_instruction *inst, char *elem, int count, int n)
 {
-		if (elem && elem[0] == 'r')
+		if (!elem)
+			return (ft_strdup(RED"Invalid parameter"RESET));
+		if (elem[0] == 'r')
 		{
 			inst->args[count].type = REG_CODE;
 			inst->args[count].size = 1;
@@ -63,15 +65,21 @@ static t_error		get_type(t_instruction *inst, char *elem, int count, int n)
 
 static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 {
+	t_error	err;
 	int		count;
 	int		tmp;
 
+	err = NULL;
 	count = 0;
 	tmp = current;
 	while (current < (tmp + g_op_tab[n].n_param))
 	{
-		get_type(inst, elem[current], count, n);
-		get_value(inst, elem[current], count);
+		err = get_type(inst, elem[current], count, n);
+		if (err)
+			return (err);
+		err = get_value(inst, elem[current], count);
+		if (err)
+			return (err);
 		current++;
 		count++;
 	}
@@ -86,16 +94,19 @@ static t_error		fill_arg(t_instruction *inst, char **elem, int current, int n)
 
 static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
 {
-	int		i;
+	t_error		err;
+	int			i;
 
 	i = -1;
-
+	err = NULL;
 	while (++i < 16)
 	{
 		if (!ft_strcmp(elem[current], g_op_tab[i].name))
 		{
 			inst->n_args = g_op_tab[i].n_param;
-			fill_arg(inst, elem, ++current, i);
+			err = fill_arg(inst, elem, ++current, i);
+			if (err)
+				return (err);
 			break ;
 		}
 	}
@@ -114,8 +125,10 @@ static t_error		dispatch_arg(t_instruction *inst, char **elem, int current)
 
 t_error		get_args(t_instruction *instruction, char **elem)
 {
+	t_error	err;
 	int		i;
 
+	err = NULL;
 	i = -1;
 	while (elem[1] && elem[++i])
 	{
@@ -123,7 +136,9 @@ t_error		get_args(t_instruction *instruction, char **elem)
 			i++;
 		if (elem[i])
 		{
-			dispatch_arg(instruction, elem, i);
+			err = dispatch_arg(instruction, elem, i);
+			if (err)
+				return (err);
 			break ;
 		}
 	}

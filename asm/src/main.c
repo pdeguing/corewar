@@ -12,6 +12,7 @@ int		main(int ac, char **av)
 {
 	t_error	err;
 
+	err = NULL;
 	if (ac == 2)
 	{
 		err = assembler(av[1]);
@@ -20,7 +21,7 @@ int		main(int ac, char **av)
 			ft_putstr(err);
 			ft_putchar('\n');
 			free(err);
-			return 1;
+			return (1);
 		}
 	}
 	else

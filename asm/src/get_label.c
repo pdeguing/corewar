@@ -34,10 +34,7 @@ t_error		get_label(t_label **new_label, char **elem)
 	len = label_char - elem[0];
 	name = ft_strsub(elem[0], 0, len);
 	if (is_invalid_label(name))
-	{
-		free(name);
 		return (ft_strjoinfree2(RED"label name is invalid: "RESET, name));
-	}
 	new = malloc(sizeof(t_label));
 	if (!new)
 		return (ft_strdup(RED"could not allocate t_label"RESET));

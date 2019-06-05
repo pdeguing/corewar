@@ -45,24 +45,25 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	t_instruction	*new_instruction;
 	t_error		err;
 
+	err = NULL;
 	new_label = NULL;
 	new_instruction = NULL;
 	replace(line, TAB, WHITE_SPACE);
 	replace(line, WHITE_SPACE, SEPARATOR_CHAR);
 	elem = ft_strsplit(line, SEPARATOR_CHAR);
 	if (!elem || !elem[0] || *elem[0] == '#')
-		return NULL;
+		return (NULL);
 	err = get_label(&new_label, elem);
 	if (err)
-		return err;
+		return (err);
 	if (new_label)
 		VECTOR_ADD(labels, new_label);
 	err = get_instruction(&new_instruction, elem);
 	if (err)
-		return err;
+		return (err);
 	if (new_instruction)
 		VECTOR_ADD(instructions, new_instruction);
-	return NULL;
+	return (NULL);
 }
 
 /*
@@ -73,25 +74,26 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 t_error		lexer(t_vector *instructions, t_champ *champ)
 {
 	char		**lines;
-	int		i;
+	int			i;
 	t_vector	labels;
 	t_error		err;
 
+	err = NULL;
 	VECTOR_INIT(&labels);
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
-		return ft_strdup(RED"could not split into array of lines"RESET);
+		return (ft_strdup(RED"could not split into array of lines"RESET));
 	i = 0;
 	while (lines[i])
 	{
 		if (*lines[i] != COMMENT_CHAR)
 			err = parse_line(instructions, &labels, lines[i]);
-		if (err)
-			return err;
+			if (err)
+				return (err);
 		i++;
 	}
 	err = feed_references(instructions, &labels);
 	if (err)
-		return err;
-	return NULL;
+		return (err);
+	return (NULL);
 }

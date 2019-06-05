@@ -6,6 +6,7 @@
 
 t_error		getName(char **dst, int fd)
 {
+	int			size;
 	char		*line;
 	char		*name;
 
@@ -16,9 +17,10 @@ t_error		getName(char **dst, int fd)
 		line++;
 	if (*line)
 		line++;
-	if (line[ft_strlen(line) - 1] != '"')
+	size = ft_strlen(line) - 1;
+	if (size < 0 || line[size] != '"' || size > PROG_NAME_LENGTH + 1)
 		return ft_strdup(RED"Name not valid"RESET);
-	name = ft_strsub(line, 0, ft_strlen(line) - 1);
+	name = ft_strsub(line, 0, size);
 	*dst = name;
 	return NULL;
 }
@@ -41,12 +43,9 @@ t_error		getComment(char **dst, int fd)
 	if (*line)
 		line++;
 	size = ft_strlen(line) - 1;
-	if (size >= 0 && line[size] != '"')
+	if (size < 0 || line[size] != '"' || size > COMMENT_LENGTH + 1)
 		return ft_strdup(RED"Comment not valid"RESET);
-	if (size >= 0 && size <= COMMENT_LENGTH)
-		comment = ft_strsub(line, 0, size);
-	else
-		return (ft_strdup(RED"Comment size is too big"RESET));
+	comment = ft_strsub(line, 0, size);
 	*dst = comment;
 	return (NULL);
 }
@@ -65,6 +64,5 @@ t_error		getContent(char **dst, int fd)
 	while (get_next_line(fd, &tmp) > 0)
 		content = ft_strjoin(ft_strjoinfree2(content, tmp), "\n");
 	*dst = content;
-	free(content);
 	return (NULL);
 }

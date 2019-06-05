@@ -115,6 +115,7 @@ t_error		get_instruction(t_instruction **dst, char **elem)
 	t_instruction	*new;
 	t_error		err;
 
+	err = NULL;
 	new = malloc(sizeof(t_instruction));
 	if (!new)
 		return (ft_strdup("could not allocate memory"));

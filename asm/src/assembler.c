@@ -31,6 +31,7 @@ t_error		assembler(char *filename)
 	t_champ		champ;
 	t_vector	instructions;
 
+	err = NULL;
 	initChamp(&champ);
 	VECTOR_INIT(&instructions);
 	err = parser(&champ, filename);
