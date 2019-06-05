@@ -20,6 +20,7 @@
 
 # define RED	"\x1b[91m"
 # define GREEN	"\x1b[92m"
+# define YELLOW "\x1b[93m"
 # define PURPLE	"\x1b[94m"
 # define RESET	"\x1b[0m"
 
