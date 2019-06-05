@@ -25,3 +25,12 @@ void	debug_print_labels(t_vector *v)
 		i++;
 	}
 }
+
+void	debug_print_darray(char **a)
+{
+	while(a && *a)
+	{
+		ft_printf("-> %s\n", *a);
+		a++;
+	}
+}

@@ -52,18 +52,37 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 	replace(line, WHITE_SPACE, SEPARATOR_CHAR);
 	elem = ft_strsplit(line, SEPARATOR_CHAR);
 	if (!elem || !elem[0] || *elem[0] == '#')
+	{
+		free_double(elem);
 		return (NULL);
+	}
 	err = get_label(&new_label, elem);
-	if (err)
-		return (err);
 	if (new_label)
 		VECTOR_ADD(labels, new_label);
-	err = get_instruction(&new_instruction, elem);
-	if (err)
-		return (err);
+	if (!err)
+		err = get_instruction(&new_instruction, elem);
 	if (new_instruction)
 		VECTOR_ADD(instructions, new_instruction);
+	free_double(elem);
+	if (err)
+		return (err);
 	return (NULL);
+}
+
+/*
+** Frees a double char pointer
+*/
+void		free_double(char **dptr)
+{
+	char **tmp;
+
+	tmp = dptr;
+	while (*dptr)
+	{
+		free(*dptr);
+		dptr++;
+	}
+	free(tmp);
 }
 
 /*
@@ -84,15 +103,16 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	if (!lines)
 		return (ft_strdup(RED"could not split into array of lines"RESET));
 	i = 0;
-	while (lines[i])
+	while (lines[i] && !err)
 	{
 		if (*lines[i] != COMMENT_CHAR)
 			err = parse_line(instructions, &labels, lines[i]);
-			if (err)
-				return (err);
 		i++;
 	}
-	err = feed_references(instructions, &labels);
+	if (!err)
+		err = feed_references(instructions, &labels);
+	free_double(lines);
+	VECTOR_FREE(&labels);
 	if (err)
 		return (err);
 	return (NULL);

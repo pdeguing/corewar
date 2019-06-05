@@ -24,7 +24,7 @@ t_error				get_reference(int *value, char *ref, t_vector *labels)
 		}
 		i++;
 	}
-	return (ft_strjoinfree2("unknown label: ", ref));
+	return (ft_strjoin("unknown label: ", ref));
 }
 
 /*
@@ -49,7 +49,7 @@ t_error				feed_references(t_vector *instructions, t_vector *labels)
 		while (j < instruction->n_args)
 		{
 			value = 0;
-			if (instruction->args[j].label)
+			if (ft_strlen(instruction->args[j].label))
 			{
 				err = get_reference(&value, instruction->args[j].label, labels);
 				if (err)

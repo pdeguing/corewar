@@ -53,6 +53,7 @@ t_error			parser(t_champ *champ, char *filename)
 		return ft_strdup(strerror(errno));
 	champ->fname = ft_strsub(filename, 0, ft_strlen(filename) - 2);
 	err = fillChamp(champ, fd);
+	close(fd);
 	if (err)
 		return (err);
 	return NULL;

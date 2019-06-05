@@ -3,8 +3,10 @@
 /*
 ** Checks if the label is properly formated with only LABEL_CHARS.
 */
-static int	is_invalid_label(char *label)
+static int	is_invalid_label(char *label, int len)
 {
+	if (len > LABEL_NAME_LENGTH)
+		return (1);
 	while (*label)
 	{
 		if (!ft_strchr(LABEL_CHARS, *label))
@@ -31,15 +33,15 @@ t_error		get_label(t_label **new_label, char **elem)
 	label_char = ft_strchr(elem[0], LABEL_CHAR);
 	if (!label_char)
 		return (NULL);
-	len = label_char - elem[0];
-	name = ft_strsub(elem[0], 0, len);
-	if (is_invalid_label(name))
-		return (ft_strjoinfree2(RED"label name is invalid: "RESET, name));
 	new = malloc(sizeof(t_label));
 	if (!new)
 		return (ft_strdup(RED"could not allocate t_label"RESET));
-	new->name = name;
 	new->offset = g_offset;
+	ft_memset(new->name, 0, LABEL_NAME_LENGTH + 1);
 	*new_label = new;
+	len = label_char - elem[0];
+	ft_strncpy(new->name, elem[0], len);
+	if (is_invalid_label(new->name, len))
+		return (ft_strjoin(RED"label name is invalid: "RESET, name));
 	return (NULL);
 }

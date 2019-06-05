@@ -39,7 +39,7 @@ typedef struct			s_champ
 }				t_champ;
 
 /*
-** Stores arguments form instructions:
+** Stores arguments from instructions:
 ** 	-> label = if not NULL, argument is a reference and should be filled\
 					later on;
 ** 	-> type = (0, 1, 2) (register, direct, indirect);
@@ -49,7 +49,7 @@ typedef struct			s_champ
 */
 typedef struct			s_argument
 {
-	char			*label;
+	char			label[LABEL_NAME_LENGTH + 1];
 	int			type;
 	size_t			size;
 	uint32_t		value;
@@ -68,7 +68,7 @@ typedef struct			s_instruction
 
 typedef struct			s_label
 {
-	char			*name;
+	char			name[LABEL_NAME_LENGTH + 1];
 	size_t			offset;
 }				t_label;
 
@@ -99,5 +99,7 @@ uint32_t	swap_endian(uint32_t num);
 void		debug_print_instructions(t_vector *);
 void		debug_print_labels(t_vector *);
 void		debug_print_darray(char **);
+
+void		free_double(char **);
 
 #endif

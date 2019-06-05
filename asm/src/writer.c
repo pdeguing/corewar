@@ -15,7 +15,10 @@ static t_error		open_file(int *fd, t_champ *champ)
 	file_name = ft_strjoin(champ->fname, ".cor");
 	*fd = open(file_name, O_WRONLY | O_CREAT);
 	if (*fd < 0)
+	{
+		free(file_name);
 		return ft_strdup(RED"File couldn't be created"RESET);
+	}
 	chmod(file_name, S_IRWXU);
 	ft_printf(GREEN"writing output to \x1b[93m%s\n"RESET, file_name);
 	free(file_name);
@@ -94,16 +97,13 @@ t_error		write_file(t_champ *champ, t_vector *instructions)
 	t_error err;
 	int	fd;
 
+	err = NULL;
 	fd = 0;
 	err = open_file(&fd, champ);
-	if (err)
-		return err;
-	err = print_header(champ, fd);
-	if (err)
-		return err;
-	err = print_instructions(instructions, fd);
-	if (err)
-		return err;
+	if (!err)
+		err = print_header(champ, fd);
+	if (!err)
+		err = print_instructions(instructions, fd);
 	close(fd);
-	return NULL;
+	return err;
 }

@@ -18,9 +18,9 @@ char		*get_opstr(char **elem)
 		}
 		if (!elem[1])
 			return (NULL);
-		return (elem[1]);
+		return (ft_strdup(elem[1]));
 	}
-	return (elem[0]);
+	return (ft_strdup(elem[0]));
 }
 
 /*
@@ -43,6 +43,7 @@ t_error		get_opcode(t_instruction *instruction, char **elem)
 		if (!ft_strcmp(g_op_tab[i].name, opstr))
 		{
 			instruction->opcode = g_op_tab[i].opcode;
+			free(opstr);
 			return (NULL);
 		}
 		i++;

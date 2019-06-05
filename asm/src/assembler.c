@@ -9,18 +9,6 @@
 #include "assembler.h"
 
 /*
-** Sets all members of t_champ struct to NULL.
-*/
-
-void		initChamp(t_champ *champ)
-{
-	champ->fname = NULL;
-	champ->name = NULL;
-	champ->comment = NULL;
-	champ->content = NULL;
-}
-
-/*
 ** Translates assembly source file into a binary file for Corewar virtual
 ** machine.
 */
@@ -32,17 +20,19 @@ t_error		assembler(char *filename)
 	t_vector	instructions;
 
 	err = NULL;
-	initChamp(&champ);
+	ft_memset(&champ, 0, sizeof(t_champ));
 	VECTOR_INIT(&instructions);
 	err = parser(&champ, filename);
-	if (err)
-		return (err);
-	err = lexer(&instructions, &champ);
-	if (err)
-		return (err);
-	err = write_file(&champ, &instructions);
-	if (err)
-		return (err);
+	if (!err)
+		err = lexer(&instructions, &champ);
+	if (!err)
+		err = write_file(&champ, &instructions);
+	free(champ.fname);
+	free(champ.name);
+	free(champ.comment);
+	free(champ.content);
 	VECTOR_FREE(&instructions);
+	if (err)
+		return (err);
 	return (NULL);
 }
