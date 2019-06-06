@@ -8,10 +8,10 @@
 
 #include <assembler.h>
 
-size_t		g_offset = 0;
+size_t				g_offset = 0;
 
 /*
-** Swaps memory from BIG-ENDIAN to LITTLE-ENDIAN or opposite.
+** Swaps memory from BIG-ENDIAN to LITTLE-ENDIAN (or opposite).
 */
 
 uint32_t			swap_endian(uint32_t num)
@@ -24,7 +24,7 @@ uint32_t			swap_endian(uint32_t num)
 ** Replaces in str every occurence of a by b.
 */
 
-static void	replace(char *str, char a, char b)
+static void			replace(char *str, char a, char b)
 {
 	while (*str)
 	{
@@ -38,12 +38,13 @@ static void	replace(char *str, char a, char b)
 ** Parses a line into an instruction and possibly a label.
 */
 
-t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
+t_error				parse_line(t_vector *instructions,
+		t_vector *labels, char *line)
 {
-	char		**elem;
-	t_label		*new_label;
+	char			**elem;
+	t_label			*new_label;
 	t_instruction	*new_instruction;
-	t_error		err;
+	t_error			err;
 
 	err = NULL;
 	new_label = NULL;
@@ -72,9 +73,9 @@ t_error		parse_line(t_vector *instructions, t_vector *labels, char *line)
 /*
 ** Frees a double char pointer
 */
-void		free_double(char **dptr)
+void				free_double(char **dptr)
 {
-	char **tmp;
+	char		**tmp;
 
 	tmp = dptr;
 	while (*dptr)
@@ -90,7 +91,7 @@ void		free_double(char **dptr)
 ** that instructions are valid and returns err if they are not.
 */
 
-t_error		lexer(t_vector *instructions, t_champ *champ)
+t_error				lexer(t_vector *instructions, t_champ *champ)
 {
 	char		**lines;
 	int			i;
@@ -102,12 +103,11 @@ t_error		lexer(t_vector *instructions, t_champ *champ)
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
 		return (ft_strdup(RED"could not split into array of lines"RESET));
-	i = 0;
-	while (lines[i] && !err)
+	i = -1;
+	while (lines[++i] && !err)
 	{
 		if (*lines[i] != COMMENT_CHAR)
 			err = parse_line(instructions, &labels, lines[i]);
-		i++;
 	}
 	if (!err)
 		err = feed_references(instructions, &labels);
