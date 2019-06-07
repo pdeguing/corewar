@@ -20,7 +20,7 @@ INCLUDES	= -I include/
 
 CC		= gcc
 
-CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror
 
 LLIB		= libft.a
 
