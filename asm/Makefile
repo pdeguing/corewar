@@ -6,7 +6,7 @@
 #    By: anjansse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/28 21:57:22 by anjansse          #+#    #+#              #
-#    Updated: 2019/06/05 10:21:01 by anjansse         ###   ########.fr        #
+#    Updated: 2019/07/12 12:44:59 by anjansse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,17 +20,9 @@ INCLUDES	= -I include/
 
 CC		= gcc
 
-CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror
 
 LLIB		= libft.a
-
-lib:
-	@echo -n 'Compiling libft...'
-	@make -C ../libft/ re
-	@cp ../libft/libft.a .
-	@echo "\t\x1b[92m✓\x1b[0m\n"
-
-.PHONY: all clean fclean re
 
 all: $(NAME)
 
@@ -43,6 +35,13 @@ $(NAME):
 
 totall: lib all
 
+lib:
+	@echo -n 'Compiling libft...'
+	@make -C ../libft/ re
+	@cp ../libft/libft.a .
+	@echo "\t\x1b[92m✓\x1b[0m\n"
+
+.PHONY: all clean fclean re
 git:
 	@git add .
 	@git commit -m "$(C)"

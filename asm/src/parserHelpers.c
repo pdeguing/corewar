@@ -27,7 +27,7 @@ t_error		getName(char **dst, int fd)
 	if (size < 0 || line[size] != '"' || size > PROG_NAME_LENGTH + 1)
 	{
 		free(tmp);
-		return ft_strdup(RED"Name not valid"RESET);
+		return (ft_strdup(RED"Name not valid"RESET));
 	}
 	name = ft_strsub(line, 0, size);
 	*dst = name;

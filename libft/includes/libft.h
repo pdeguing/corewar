@@ -6,7 +6,7 @@
 /*   By: anjansse <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 22:16:13 by anjansse          #+#    #+#             */
-/*   Updated: 2019/05/07 22:48:02 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/06/06 11:10:02 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include "get_next_line.h"
+# include "read_file.h"
 # include "ft_printf.h"
 
 typedef struct		s_list

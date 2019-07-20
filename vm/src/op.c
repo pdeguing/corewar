@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   op.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: qpeng <qpeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2013/11/06 14:44:35 by zaz              ###   ########.fr       */
+/*   Updated: 2019/07/02 18:33:56 by qpeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
+#include "vm.h"
+
+/*
+** 00b = Invalid
+** 01b = Register 		4 bytes
+** 10b = Direct value   4 bytes
+** 11b = Indirect value 2 bytes
+*/
 
 t_op    g_op_tab[17] =
 {
@@ -39,3 +47,24 @@ t_op    g_op_tab[17] =
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
 
+// 01 10 10 00
+
+/*
+bcode   acb		register	direct 			direct 
+0b    	68		01			00 0f			00 00
+
+
+	01 10 01 00
+	r  d  r 
+and    r1,	%0, 		r1
+06  64 01	00 00 00 00 01
+
+sti			r1,	r1, %11
+0b		58	01	01	00 0b
+
+bcode 	acb 	register 	
+06		64		01			00 00 00 00		01
+
+01		01		00 00 00 01 
+09 ff fb
+*/
