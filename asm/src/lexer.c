@@ -103,11 +103,12 @@ t_error				lexer(t_vector *instructions, t_champ *champ)
 	lines = ft_strsplit(champ->content, NEWLINE);
 	if (!lines)
 		return (ft_strdup(RED"could not split into array of lines"RESET));
-	i = -1;
-	while (lines[++i] && !err)
+	i = 0;
+	while (lines[i] && !err)
 	{
 		if (*lines[i] != COMMENT_CHAR)
 			err = parse_line(instructions, &labels, lines[i]);
+		i++;
 	}
 	if (!err)
 		err = feed_references(instructions, &labels);
