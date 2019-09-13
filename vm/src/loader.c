@@ -3,164 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   loader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qpeng <qpeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/16 02:31:59 by qpeng             #+#    #+#             */
-/*   Updated: 2019/07/13 16:39:50 by qpeng            ###   ########.fr       */
+/*   Updated: 2019/09/13 11:23:45 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vm.h"
 #include <math.h>
+#include "vm.h"
 
+int8_t     *g_ownerbase;
 
-/**
- *  parse the champion header into t_hdr
- *  the magic is in little endianess format
- * 
- * @param {t_hdr} hdr - current vm structure
- * @param {int} fd - file descriptor of the file where the
- *      champion is stored
- * 
- */
-
-void    parse_champ_header(t_hdr *hdr, int fd)
+static void    save_flag(t_vm *vm, char *filename)
 {
-    off_t   siz;
-
-    if (fd < 0)
-        return ;
-    if ((siz = lseek(fd, 0, SEEK_END)) == -1)
-        PERROR("lseek");
-    if ((size_t)siz < sizeof(t_hdr))
-        ERROR("Invalid header size\n");
-    if (lseek(fd, 0, SEEK_SET) == -1)
-        PERROR("lseek");
-    if (read(fd, hdr, sizeof(t_hdr)) != sizeof(t_hdr))
-        PERROR("read");
-    rev_bytes(&hdr->magic, sizeof(hdr->magic));
-	if (hdr->magic != COREWAR_EXEC_MAGIC)
-	{
-        printf("%x %x\n", hdr->magic, COREWAR_EXEC_MAGIC);
-        ERROR("Invalid header\n");
-    }
-    rev_bytes(&hdr->prog_size, sizeof(hdr->prog_size));
-	if (hdr->prog_size != siz - sizeof(t_hdr))
-        ERROR("Invalid header\n");
-	if (hdr->prog_size > CHAMP_MAX_SIZE)
-	{
-        printf("%d %d\n", hdr->prog_size, CHAMP_MAX_SIZE);
-        ERROR("Champion too large\n");
-    }
+    if (!scmp_(filename, "gui") || !scmp_(filename, "n"))
+        vm->flag |= FL_GUI;
+    else if (!scmp_(filename, "d") || !scmp_(filename, "dump"))
+        vm->flag |= FL_DUMP;
+    else
+        ERROR(RED BOLD"Error: flag invalid.\n"RESET);
 }
 
-/**
- *  init a process and insert it at the beginning of the 
- *  process list.
- * 
- *  pid started at -1, the byte code is ffff ffff.
- * 
- *  need to assign the pid to the first register of the 
- *  process, so that the champion can call live with 
- *  the right value indicating that the process/champion
- *  with this pid is alive.
- * 
- * @param {t_vm} vm - current vm structure
- * @param {void *} pc - current program counter
- * 
- */
+// void    dump_mem(t_vm *vm)
+// {
+//     int                 i;
+//     unsigned            siz;
 
-void    init_process(t_vm *vm, void * pc)
+//     i = 0;
+//     siz = (unsigned)sqrt(MEM_SIZE);
+//     while (i < MEM_SIZE) // < MEM_SIZE
+//     {
+//         if (i % siz == 0)
+//         {
+//             if (i)
+//                 printf("\n");
+//             printf("%#06x : ", i);
+//         }
+//         h_puthex(vm->memory[i]);
+//         printf(" ");
+//         i++;
+//     }
+//     printf("\nOWNER MAP: \n");
+//     i ^= i;
+//     while (i < MEM_SIZE) // < MEM_SIZE
+//     {
+//         if (i % siz == 0)
+//         {
+//             if (i)
+//                 printf("\n");
+//             printf("%#06x : ", i);
+//         }
+//         if (vm->owner[i] != 7)
+//             printf("%02d", vm->owner[i]);
+//         else
+//             printf("__");
+//         printf(" ");
+//         i++;
+//     }
+//     printf("\n");
+// }
+
+void    print_mem(t_vm *vm, t_gui *gui)
 {
-    t_process           *process;
-    static int32_t      pid = -1;
-
-    process = malloc(sizeof(t_process));
-    bzero_(process, sizeof(t_process));
-    process->pc = pc;
-    process->pid = pid;
-    process->registers[1] = pid;
-    printf("initing... pid: %d\n", pid);
-    pid++;
-    if (vm->process_list)
-        process->next = vm->process_list;
-    vm->process_list = process;
-    vm->nprocess++;
-}
-
-/**
- *  read .cor from command line, parse the info and load it
- *  into the memory
- *  
- *  parse the header of the champion file into t_hdr
- *  copy the name of the champion and the comment into 
- *  t_champ and the t_champ goes into t_vm.champions
- *  the id of the champion will be the same as pid of
- *  the process, but when displaying to the terminal
- *  we need to +2 to the value (pid start at -1, but
- *  it's also the 1st process aka "player 1")
- * 
- *  the acutal byte codes of the champion will be copied 
- *  into the arena (vm.memory), and the corresponding
- *  process will be initialized, as you know, 
- *  a process is the instance of a champion that
- *  is being executed 
- * 
- * @param {t_vm} vm - current vm structure
- * @param {int} fd - file descriptor of the file where the
- *      champion is stored
- * 
- */
-
-void    load_champ(t_vm *vm, int fd)
-{
-    t_hdr               hdr;
-    t_champ             *champ;
-    static uint8_t      index;
-    void                *pc;
-
-    parse_champ_header(&hdr, fd);
-    champ = &(vm->corewar.champions[index]);
-	memcpy_(champ->name, hdr.prog_name, PROG_NAME_LENGTH);
-	memcpy_(champ->comment, hdr.comment, COMMENT_LENGTH);
-    champ->id = index - 1;
-	pc = &vm->memory[(MEM_SIZE / vm->corewar.nplayers) * index];
-	if (read(fd, pc, hdr.prog_size) != hdr.prog_size)
-		PERROR("read");
-    init_process(vm, pc);
-    LOG("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",  champ->id + 2, 
-        hdr.prog_size, champ->name, champ->comment);
-    index++;
-    close(fd);
-}
-
-void    print_mem(t_vm *vm)
-{
-    int                 i;
-    unsigned            siz;
-
-    i = 0;
-    siz = (unsigned)sqrt(MEM_SIZE);
-    while (i < 100) // < MEM_SZIE
+    if (vm->flag &= FL_GUI)
     {
-        if (i % siz == 0)
+        int                 i;
+        int                 x;
+        int                 y;
+
+        i = 0;
+        x = -2;
+        y = 1;
+        int color[4] = {COLOR_YELLOW, COLOR_GREEN, COLOR_RED, COLOR_MAGENTA};
+        while (i < MEM_SIZE)
         {
-            if (i)
-                printf("\n");
-            printf("%#06x : ", i);
+            if (x == MAX_X - 2)
+            {
+                x = -2;
+                ++y;
+            }
+            x += 3;
+            if (vm->owner[i] != 7)
+            {
+                init_pair(vm->owner[i] + 2, color[vm->owner[i] + 1], COLOR_BLACK);
+                wattron(gui->win, COLOR_PAIR(vm->owner[i] + 2));
+                mvwprintw(gui->win, y, x, "%02x", vm->memory[i]);
+                wattroff(gui->win, COLOR_PAIR(vm->owner[i] + 2));
+            }
+            ++i;
         }
-        puthex(vm->memory[i]);
-        printf(" ");
-        i++;
     }
-    printf("\n");
 }
 
 void    loader(t_vm *vm, char *filename)
 {
     int fd;
 
-    if ((fd = open(filename, O_RDONLY)) == -1)
-        PERROR("open"); 
-    load_champ(vm, fd);
+    if (*filename == '-')
+    {
+        save_flag(vm, &(filename[1]));
+        return ;
+    }
+    else if (ft_strstr(filename, ".cor"))
+    {
+        if ((fd = open(filename, O_RDONLY)) == -1)
+            PERROR("open"); 
+        ch_load_champ(vm, fd);
+    }
+    else
+    {
+        if (sverif_(filename, "0123456789") && vm->flag & FL_DUMP)
+            vm->corewar.dump_cycle = ft_atoi(filename);
+        else
+            ERROR(RED BOLD"Error: Invalid element as argument.\n"RESET);
+    }
 }

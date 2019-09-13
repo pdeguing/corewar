@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qpeng <qpeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 20:01:05 by qpeng             #+#    #+#             */
-/*   Updated: 2019/07/13 16:42:43 by qpeng            ###   ########.fr       */
+/*   Updated: 2019/08/05 13:01:53 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
  * @param {t_byte} pos - the memory position 
  *      that will be evaluated
  */
-
-t_byte *mem_pos(t_byte *pos)
+ t_byte *mem_pos(t_byte *pos)
 {
     if (pos > MAP_END)
         return (MAP_START + (pos - MAP_END));
@@ -45,15 +44,21 @@ t_byte *mem_pos(t_byte *pos)
  * @param {uint8_t} cnt - length of the buffer
  * 
  */
-
 void    mem_oper(t_mem_op op, t_byte *dst, t_byte *src, uint8_t cnt)
 {
+    off_t   offset;
+
     while (cnt--)
     {
         if (op == READ)
             src =  src + 1 > MAP_END ? MAP_START : src;
         else 
             dst = dst + 1 > MAP_END ? MAP_START : dst;
+        if (dst > MAP_START && dst < MAP_END)
+        {
+            offset = dst - MAP_START;
+            *(OWNER_START + offset) = CP->champion->id;
+        }
         *dst++ = *src++;
     }
 }
@@ -79,7 +84,6 @@ void    mem_oper(t_mem_op op, t_byte *dst, t_byte *src, uint8_t cnt)
  *      the address will be "% IDX_MOD"
  * 
  */
-
 void    read_arg(t_arg *arg, int32_t *buff, t_bool addressing, t_bool far)
 {
     int32_t     tmp;
@@ -104,15 +108,3 @@ void    read_arg(t_arg *arg, int32_t *buff, t_bool addressing, t_bool far)
             *buff = CP->registers[*buff];
     }
 }
-
-// void    read_m(void *fd, void *buff, unsigned int size)
-// {
-//     mem_oper(READ, (t_byte *)buff, (t_byte *)fd, size);
-//     rev_bytes(buff, size);
-// }
-
-// void    write_m(void *fd, void *buff, unsigned int size)
-// {
-//     mem_oper(WRITE, (t_byte *)fd, (t_byte *)buff, size);
-//     rev_bytes(fd, size);
-// }

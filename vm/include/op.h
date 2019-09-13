@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qpeng <qpeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/06/19 05:21:09 by qpeng            ###   ########.fr       */
+/*   Updated: 2019/09/13 11:18:40 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 #define COMMENT_CHAR			'#'
 #define LABEL_CHAR				':'
 #define DIRECT_CHAR				'%'
-#define SEPARATOR_CHAR			','
+#define SEPARATOR_CHAR    ','
 
 #define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
 
@@ -48,7 +48,7 @@
 
 #define CYCLE_TO_DIE			1536
 #define CYCLE_DELTA				50
-#define NBR_LIVE				21
+#define NBR_LIVE	  			21
 #define MAX_CHECKS				10
 
 /*
