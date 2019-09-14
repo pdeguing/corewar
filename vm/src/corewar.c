@@ -6,7 +6,7 @@
 /*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/16 02:32:01 by qpeng             #+#    #+#             */
-/*   Updated: 2019/09/13 11:28:17 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/09/14 11:53:37 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ static int			is_endgame(t_vm *vm)
 	return (0);
 }
 
+static void			update_gui(t_vm *vm, t_gui *gui)
+{
+	if (update_screen(gui->win, gui->speed) == ESC || update_screen(gui->win_info, gui->speed) == ESC || (vm->corewar.cycle > 1000))
+		end_screen();
+	if (update_screen(gui->win, gui->speed) == SPACE || update_screen(gui->win_info, gui->speed) == SPACE)
+		gui->speed = (gui->speed == 5) ? 1 : gui->speed + 1;
+	print_info(gui, vm);	
+    print_mem(vm, gui);
+}
+
 /**
  *  run corewar game && initialize GUI if flag (-n) enabled.
  *  @param {t_vm} vm - vm struct 
@@ -31,20 +41,14 @@ void    cw_run(t_vm *vm)
 {
 	t_gui       gui;
 
+	gui.speed = 1;
 	if (vm->flag &= FL_GUI)
 		init_gui(&gui);
 	while (1)
 	{
 		if (vm->flag & FL_GUI)
-		{
-			if (update_screen(gui.win, gui.speed) == ESC || update_screen(gui.win_info, gui.speed) == ESC || (vm->corewar.cycle > 1000))
-				end_screen();
-			if (update_screen(gui.win, gui.speed) == SPACE || update_screen(gui.win_info, gui.speed) == SPACE)
-				gui.speed = (gui.speed == 5) ? 1 : gui.speed + 1;
-			print_info(&gui, vm);
-		}
+			update_gui(vm, &gui);
 		vm->corewar.cycle += gui.speed * 2;
-		print_mem(vm, &gui);
 		p_process_loop(vm);
 		if (is_endgame(vm))
 			//printf("start killing!\n");

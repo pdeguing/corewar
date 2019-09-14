@@ -6,7 +6,7 @@
 /*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 02:39:18 by qpeng             #+#    #+#             */
-/*   Updated: 2019/08/16 11:53:22 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/09/14 11:17:21 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static t_instr_hdlr instr_funptr[] = {
     ft_lfork,
     ft_aff
 };
-
-
 
 /**
  *  init a process and insert it at the beginning of the 
@@ -59,7 +57,6 @@ void    p_init_process(t_vm *vm, void * pc, t_champ *champ)
     process->pid = pid;
     process->registers[1] = pid;
     process->champion = champ;
-    //printf("initing... pid: %d\n", pid);
     pid++;
     if (vm->process_list)
         process->next = vm->process_list;
