@@ -147,6 +147,7 @@ typedef struct      s_cw
 	t_champ			champions[MAX_PLAYERS];
 	uint8_t			ownership[MEM_SIZE];
     uint8_t         nplayers;
+	uint32_t		call_live;
 	int32_t			dump_cycle;
 	uint32_t 		kill_cycle;
 }                   t_cw;

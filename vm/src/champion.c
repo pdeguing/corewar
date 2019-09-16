@@ -6,7 +6,7 @@
 /*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 15:02:14 by qpeng             #+#    #+#             */
-/*   Updated: 2019/09/14 11:19:26 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/09/16 11:11:08 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void    ch_load_champ(t_vm *vm, int fd)
 		PERROR("read");
     memset_(&vm->owner[(MEM_SIZE / vm->corewar.nplayers) * index], champ->id, hdr.prog_size);
     champ->prog_size = hdr.prog_size;
+    champ->call_live = 0;
     p_init_process(vm, pc, champ);
     index++;
     close(fd);

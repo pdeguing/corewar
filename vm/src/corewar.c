@@ -6,7 +6,7 @@
 /*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/16 02:32:01 by qpeng             #+#    #+#             */
-/*   Updated: 2019/09/14 11:53:37 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/09/16 13:58:05 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,28 @@
 
 t_byte	*g_base;
 
-static int			is_endgame(t_vm *vm)
+static int			is_endgame(t_vm *vm, unsigned char *verif)
 {
-	(void)vm;
+	int	i;
+
+	i = -1;
+	if (vm->corewar.cycle % vm->corewar.kill_cycle == 0)
+	{
+		while (++i < 4)
+		{
+			if (vm->corewar.champions[i].last_live < vm->corewar.cycle - vm->corewar.kill_cycle)
+				vm->corewar.champions[i].lives = 0; // UNQUEUE or remove from list
+		}
+	}
+	if (vm->corewar.call_live > NBR_LIVE)
+	{
+		vm->corewar.kill_cycle -= CYCLE_DELTA;
+		*verif = 0;
+	}
+	if (*verif >= MAX_CHECKS)
+		vm->corewar.kill_cycle -= 1;
+	*verif++;
+	vm->corewar.call_live = 0;
 	return (0);
 }
 
@@ -40,8 +59,10 @@ static void			update_gui(t_vm *vm, t_gui *gui)
 void    cw_run(t_vm *vm)
 {
 	t_gui       gui;
+	unsigned char verif;
 
 	gui.speed = 1;
+	verif = 0;
 	if (vm->flag &= FL_GUI)
 		init_gui(&gui);
 	while (1)
@@ -50,7 +71,7 @@ void    cw_run(t_vm *vm)
 			update_gui(vm, &gui);
 		vm->corewar.cycle += gui.speed * 2;
 		p_process_loop(vm);
-		if (is_endgame(vm))
+		if (is_endgame(vm, &verif))
 			//printf("start killing!\n");
 		if (!vm->nprocess)
 			ERROR("some one win!");
@@ -115,6 +136,7 @@ void    cw_env_init(t_vm *vm, int nplayers)
 	vm->corewar.dump_cycle = -1;
 	MAP_START = vm->memory;
 	OWNER_START = vm->owner;
+	vm->corewar.kill_cycle = CYCLE_TO_DIE;
 	memset_(OWNER_START, 7, MEM_SIZE);
 	setbuf(stdout, NULL);
 }
