@@ -102,7 +102,6 @@ int			sverif_(char *b, char *v)
 	int i;
 	unsigned char verif = 0;
 
-	printf("base = \"%s\"\n", b);
 	while (*b)
 	{
 		i = -1;

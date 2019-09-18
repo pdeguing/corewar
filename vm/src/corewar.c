@@ -6,7 +6,7 @@
 /*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/16 02:32:01 by qpeng             #+#    #+#             */
-/*   Updated: 2019/09/16 13:58:05 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/09/18 12:53:51 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,70 @@
 
 t_byte	*g_base;
 
-static int			is_endgame(t_vm *vm, unsigned char *verif)
+/*
+** Removes a process from the list of processes in t_process struct.
+** @param {t_vm} vm - vm struct
+*/
+
+static void			process_kill(t_vm *vm, int i)
 {
-	int	i;
+	(void)vm;
+	(void)i;
+}
+
+/*
+** Checks if each process has indeed made a live call during it's turn.
+** if not, calls the "process_kill" function.
+** @param {t_vm} vm - vm struct
+*/
+
+static void			process_check(t_vm *vm)
+{
+	int 	i;
 
 	i = -1;
-	if (vm->corewar.cycle % vm->corewar.kill_cycle == 0)
+	while (++i < vm->nprocess)
 	{
-		while (++i < 4)
+		if (vm->corewar.call_live == 0) //THIS IS WRONG, NEEDS TO CHECK IF EACH PROCESS CALLED A LIVE
+			process_kill(vm, i);
+	}
+}
+
+/*
+** Check for cycle_to die and decrements it if needed.
+** @param {t_vm} vm - vm struct 
+*/
+
+static int			cycle_check(t_vm *vm)
+{
+	if ((vm->corewar.cycle % vm->corewar.kill_cycle) == 0)
+	{
+		vm->corewar.kill_turn++;
+		if (vm->corewar.call_live >= NBR_LIVE || vm->corewar.kill_turn > MAX_CHECKS)
 		{
-			if (vm->corewar.champions[i].last_live < vm->corewar.cycle - vm->corewar.kill_cycle)
-				vm->corewar.champions[i].lives = 0; // UNQUEUE or remove from list
+			vm->corewar.kill_cycle -= CYCLE_DELTA;
+			vm->corewar.kill_turn = 0;
 		}
+		process_check(vm);
+		vm->corewar.call_live = 0;
 	}
-	if (vm->corewar.call_live > NBR_LIVE)
+	if (vm->corewar.cycle == (uint32_t)vm->corewar.dump_cycle)
 	{
-		vm->corewar.kill_cycle -= CYCLE_DELTA;
-		*verif = 0;
+		dump_mem(vm);
 	}
-	if (*verif >= MAX_CHECKS)
-		vm->corewar.kill_cycle -= 1;
-	*verif++;
-	vm->corewar.call_live = 0;
 	return (0);
 }
 
-static void			update_gui(t_vm *vm, t_gui *gui)
-{
-	if (update_screen(gui->win, gui->speed) == ESC || update_screen(gui->win_info, gui->speed) == ESC || (vm->corewar.cycle > 1000))
-		end_screen();
-	if (update_screen(gui->win, gui->speed) == SPACE || update_screen(gui->win_info, gui->speed) == SPACE)
-		gui->speed = (gui->speed == 5) ? 1 : gui->speed + 1;
-	print_info(gui, vm);	
-    print_mem(vm, gui);
-}
-
-/**
- *  run corewar game && initialize GUI if flag (-n) enabled.
- *  @param {t_vm} vm - vm struct 
+/*
+**  run corewar game && initialize GUI if flag (-v | -gui) enabled.
+**  @param {t_vm} vm - vm struct 
 */
 
 void    cw_run(t_vm *vm)
 {
 	t_gui       gui;
-	unsigned char verif;
 
 	gui.speed = 1;
-	verif = 0;
 	if (vm->flag &= FL_GUI)
 		init_gui(&gui);
 	while (1)
@@ -71,8 +88,7 @@ void    cw_run(t_vm *vm)
 			update_gui(vm, &gui);
 		vm->corewar.cycle += gui.speed * 2;
 		p_process_loop(vm);
-		if (is_endgame(vm, &verif))
-			//printf("start killing!\n");
+		cycle_check(vm);
 		if (!vm->nprocess)
 			ERROR("some one win!");
 	}
@@ -88,6 +104,7 @@ void    cw_run(t_vm *vm)
 **  @param {int} ac - number of arguments
 **  @param {char **} av - argument vector
 */
+
 void    cw_read_args(t_vm *vm, int ac, char **av)
 {
 	int     i;
@@ -102,12 +119,13 @@ void    cw_read_args(t_vm *vm, int ac, char **av)
 		ERROR(RED BOLD"Error: no dump cycle has been given as arg.\n"RESET);
 }
 
-/**
- *  clean up stage
- *  deallocates all the resouces back
- * 
- *  @param {t_vm} vm - vm struct 
- */
+/*
+**  clean up stage
+**  deallocates all the resouces back
+** 
+**  @param {t_vm} vm - vm struct 
+*/
+
 void    cw_cleanup(t_vm *vm)
 {
 	(void)vm;
@@ -121,12 +139,13 @@ void    cw_cleanup(t_vm *vm)
 	// }
 }
 
-/**
- *  init all the env
- *  set g_base as the beginning of memory 
- * 
- *  @param {t_vm} vm - vm struct 
- */
+/*
+**  init all the env
+**  set g_base as the beginning of memory 
+** 
+**  @param {t_vm} vm - vm struct 
+*/
+
 void    cw_env_init(t_vm *vm, int nplayers)
 {
 	bzero_(vm, sizeof(t_vm));
@@ -137,17 +156,19 @@ void    cw_env_init(t_vm *vm, int nplayers)
 	MAP_START = vm->memory;
 	OWNER_START = vm->owner;
 	vm->corewar.kill_cycle = CYCLE_TO_DIE;
+	vm->corewar.call_live = 0;
 	memset_(OWNER_START, 7, MEM_SIZE);
 	setbuf(stdout, NULL);
 }
 
-/**
- *  start the corewar game, set up (initialize all the envs)
- *  read all the args and run processes
- * 
- *  @param {int} ac - number of arguments
- *  @param {char **} av - argument vector
- */
+/*
+**  start the corewar game, set up (initialize all the envs)
+**  read all the args and run processes
+** 
+**  @param {int} ac - number of arguments
+**  @param {char **} av - argument vector
+*/
+
 void    cw_start(int ac, char **av)
 {
 	t_vm vm;

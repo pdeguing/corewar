@@ -6,7 +6,7 @@
 /*   By: anjansse <anjansse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 02:39:18 by qpeng             #+#    #+#             */
-/*   Updated: 2019/09/14 11:17:21 by anjansse         ###   ########.fr       */
+/*   Updated: 2019/09/17 17:31:02 by anjansse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,6 @@ void    p_process_loop(t_vm   *vm)
     curr_p = vm->process_list;
     while (curr_p)
     {
-        //printf("current cycle: %d l: %d, %d\n", vm->corewar.cycle, r_cycles[curr_p->pid + 1], *(curr_p->pc));
         if (*(curr_p->pc) && *(curr_p->pc) <= 16)
         {
             if (!r_cycles[curr_p->pid + 1])
@@ -207,8 +206,6 @@ void    p_process_loop(t_vm   *vm)
             r_cycles[curr_p->pid + 1]--;
             if (!r_cycles[curr_p->pid + 1])
             {
-                //printf("Pid: %d\n", curr_p->pid);
-                //printf("Cycle: %d\n", vm->corewar.cycle);
                 if (vm->debug_mode)
                     //h_print_register(curr_p);
                 instruction_cycle(vm, curr_p);

@@ -118,7 +118,6 @@ typedef struct 		s_task
 	uint64_t		argv[MAX_ARGS_NUMBER];
 }					t_task;
 
-
 typedef struct      s_champ
 {
 	int32_t			id;
@@ -128,7 +127,6 @@ typedef struct      s_champ
 	uint32_t		lives;
 	uint32_t 		last_live;
 }                   t_champ;
-
 
 typedef struct      	s_process
 {
@@ -148,10 +146,10 @@ typedef struct      s_cw
 	uint8_t			ownership[MEM_SIZE];
     uint8_t         nplayers;
 	uint32_t		call_live;
-	int32_t			dump_cycle;
+	int64_t			dump_cycle;
 	uint32_t 		kill_cycle;
+	int				kill_turn;
 }                   t_cw;
-
 
 typedef struct      s_vm
 {
@@ -202,7 +200,7 @@ void			ch_parse_champ_header(t_hdr *hdr, int fd);
 
 // helper 
 void    		h_rev_bytes(void *ptr, size_t n);
-void			h_puthex(unsigned char c, t_gui *gui, int x, int y);
+void			h_puthex(unsigned char c);
 void    		h_print_register(t_process *cp);
 void    		print_mem(t_vm *vm, t_gui *gui);
 void			bzero_(void *rsi, size_t rcx);
@@ -219,19 +217,21 @@ void    		p_fork_process(t_vm *vm, t_process *parent, int32_t offset, t_bool far
 t_champ			*ch_search_champion(t_vm *vm, int32_t id);
 void            ch_load_champ(t_vm *vm, int fd);
 
-// memory 
+// memory
 t_byte 			*mem_pos(t_byte *pos);
 void 			mem_oper(t_mem_op op, t_byte *dst, t_byte *src, uint8_t cnt);
 void    		read_m(void *fd, void *buff, unsigned int size);
 void    		write_m(void *fd, void *buff, unsigned int size);
 void    		read_arg(t_arg *arg, int32_t *buff, t_bool addressing, t_bool far);
+void			dump_mem(t_vm *vm);
 
 /* GRAPHIC USER INTERFACE FUNCTIONS */
 
 WINDOW          *init_screen(WINDOW *win, int max_x, int y, int x);
 void            end_screen(void);
-char            update_screen(WINDOW *win, uint32_t speed);
+char            update_screen(WINDOW *win);
 void        	print_info(t_gui *gui, t_vm *vm);
+void			update_gui(t_vm *vm, t_gui *gui);
 void			init_gui(t_gui *gui);
 
 #endif

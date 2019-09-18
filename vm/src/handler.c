@@ -14,9 +14,7 @@ void    ft_live(t_vm *vm, t_instr *cinstr)
 	champ->lives++; 
 	vm->corewar.call_live++;
 	champ->last_live = vm->corewar.cycle;
-	ft_putstr("un processus dit que le joueur "); 
-	ft_putstr(champ->name);
-	ft_putstr(" est en vie");
+	// printf("un processus dit que le joueur %s est en vie.\n", champ->name);
 }
 
 void    ft_st(t_vm *vm, t_instr *cinstr)
